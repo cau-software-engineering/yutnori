@@ -2,24 +2,74 @@ package org.example.domain.board;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import org.example.domain.YutGenerator;
+import org.example.domain.YutResult;
+import org.example.domain.YutGenerateOptions;
+import org.example.domain.RandomYutGenerateStrategy;
 
 public class YutnoriBoardUI extends JFrame {
+
+    private JLabel resultLabel;
 
     public YutnoriBoardUI() {
         setTitle("Yutnori Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 600);
+        setSize(1200, 600);
         setLocationRelativeTo(null);
 
-        add(new BoardPanel());
+        // 메인 패널을 수평으로 배치 (왼쪽: 보드, 오른쪽: 컨트롤 패널)
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        getContentPane().add(mainPanel);
+
+        // 왼쪽: 기존 보드 (예: 600x600)
+        BoardPanel boardPanel = new BoardPanel();
+        boardPanel.setPreferredSize(new Dimension(600, 600));
+        mainPanel.add(boardPanel, BorderLayout.WEST);
+
+        // 오른쪽: 컨트롤 패널 (600x600)
+        JPanel controlPanel = new JPanel();
+        controlPanel.setPreferredSize(new Dimension(600, 600));
+        controlPanel.setLayout(new BorderLayout());
+        mainPanel.add(controlPanel, BorderLayout.CENTER);
+
+        // 결과를 표시할 라벨 (중앙, 큰 글씨)
+        resultLabel = new JLabel("결과", SwingConstants.CENTER);
+        resultLabel.setFont(new Font("Serif", Font.BOLD, 48));
+        controlPanel.add(resultLabel, BorderLayout.CENTER);
+
+        // 윷 던지기 버튼 (하단 중앙, 마진 포함)
+        JButton throwButton = new JButton("윷 던지기");
+        throwButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // YutGenerator를 통해 윷 결과를 요청
+                YutGenerator generator = new YutGenerator(new RandomYutGenerateStrategy());
+                // 옵션을 RANDOM으로 하고, designatedResult는 null로 전달
+                YutResult result = generator.generate(YutGenerateOptions.RANDOM, null);
+                // 결과를 라벨에 출력
+                resultLabel.setText(result.toString());
+            }
+        });
+
+        // 버튼을 감싸는 패널에 상하 마진 추가
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        buttonPanel.add(throwButton);
+        controlPanel.add(buttonPanel, BorderLayout.SOUTH);
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new YutnoriBoardUI().setVisible(true);
         });
+
+
     }
 
     class BoardPanel extends JPanel {
@@ -74,7 +124,7 @@ public class YutnoriBoardUI extends JFrame {
             // --------------------------------
             edgeNormalNodes.clear();
             int segments = 5;               // 5등분 (코너 포함 5구간 → 내부 노드 4개)
-            int gap = SIZE / segments;      // 각 구간 길이
+            int gap = SIZE / segments;      // 각 노드 간 거리
 
             // 윗변 (왼쪽상단 -> 오른쪽상단)
             for(int i = 1; i < segments; i++) {
