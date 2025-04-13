@@ -5,12 +5,18 @@ import java.util.List;
 import java.util.Map;
 import org.example.domain.yut.YutResult;
 
-public class SquareBoard {
+public class SquareBoard implements Board {
 
     private final Map<String, Node> boards;
+    private final Node entryNode;
 
-    public SquareBoard(Map<String, Node> boards) {
+    public Node getEntryNode() {
+        return entryNode;
+    }
+
+    public SquareBoard(Map<String, Node> boards, String entryNodeId) {
         this.boards = boards;
+        this.entryNode = boards.get(entryNodeId);
     }
 
     public List<Node> next(String startNodeName, YutResult result) {

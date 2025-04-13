@@ -82,13 +82,13 @@ public class SquareBoardCreator {
                 s0, s1, s2, s3,
                 s4, s5
         );
-        return createBoard(nodes);
+        return createBoard(nodes, "S0");
     }
 
-    private SquareBoard createBoard(List<Node> nodes) {
+    private SquareBoard createBoard(List<Node> nodes, String entryNodeId) {
         Map<String, Node> map = nodes.stream()
                 .collect(Collectors.toMap(Node::getName, node -> node));
-        return new SquareBoard(map);
+        return new SquareBoard(map, entryNodeId);
     }
 
     private void linkEnd(CornerNode startNode, CornerNode cornerNode, EndNode end) {
