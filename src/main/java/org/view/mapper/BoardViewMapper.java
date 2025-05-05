@@ -3,6 +3,7 @@ package org.view.mapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.core.domain.board.BoardType;
 import org.core.dto.NodeViewDto;
 
@@ -22,10 +23,14 @@ public class BoardViewMapper {
         return pool;
     }
 
-    public List<NodeViewDto> mapTo(BoardType boardType) {
+    public List<NodeViewDto> mapTo(BoardType boardType, int margin, int size) {
         return pool.stream()
-                .filter(viewInfo -> viewInfo.isType(boardType))
-                .map(viewInfo -> new NodeViewDto(viewInfo.getNodeName(), viewInfo.getX(), viewInfo.getY()))
-                .toList();
+                .filter(v -> v.isType(boardType))
+                .map(v -> new NodeViewDto(
+                        v.getNodeName(),
+                        v.getX(margin, size),
+                        v.getY(margin, size)
+                ))
+                .collect(Collectors.toList());
     }
 }

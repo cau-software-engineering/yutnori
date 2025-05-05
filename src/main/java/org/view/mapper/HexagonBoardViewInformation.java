@@ -104,12 +104,12 @@ public enum HexagonBoardViewInformation implements ViewInformation {
     }
 
     @Override
-    public int getX() {
+    public int getX(int margin, int size) {
         return x;
     }
 
     @Override
-    public int getY() {
+    public int getY(int margin, int size) {
         return y;
     }
 
