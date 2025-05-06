@@ -2,6 +2,7 @@ package org.view.swing;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
 
 import org.core.domain.board.BoardType;
 import org.core.state.game.GameStateMachine;
@@ -32,27 +33,60 @@ public class BoardPanel extends JPanel {
         var views = new BoardViewMapper()
                 .mapTo(gameSM.context.boardType, MARGIN, SIZE);
 
+
+
         // dto 좌표값으로 노드 랜더링
         for (var dto : views) {
             int r = dto.name().startsWith("S") ? CORNER_R : NORMAL_R;
             g2.fillOval(dto.x() - r, dto.y() - r, 2*r, 2*r);
         }
 
-        // 사각형 보드 외곽선
-        if (gameSM.context.boardType == BoardType.SQUARE){
-            g2.drawRect(MARGIN, MARGIN, SIZE, SIZE);
-            g2.drawLine(MARGIN, MARGIN, MARGIN+SIZE, MARGIN+SIZE);
-            g2.drawLine(MARGIN+SIZE, MARGIN, MARGIN, MARGIN+SIZE);
+        var sNodes = views.stream()
+                .filter(dto -> dto.name().startsWith("S"))
+                .sorted(Comparator.comparingInt(dto -> Integer.parseInt(dto.name().substring(1))))
+                .toList();
 
-        }
-        // 오각형
-        else if (gameSM.context.boardType == BoardType.PENTAGON){
+        var center = views.stream()
+                .filter(dto -> dto.name().equals("S6"))
+                .findFirst()
+                .orElseThrow();
 
-        }
+        switch (gameSM.context.boardType) {
 
-        // 육각형
-        else {
+            case SQUARE:
+                g2.drawRect(MARGIN, MARGIN, SIZE, SIZE);
+                g2.drawLine(MARGIN, MARGIN, SIZE + SIZE, SIZE + SIZE);
+                g2.drawLine(MARGIN + SIZE, MARGIN, MARGIN, MARGIN + SIZE);
 
+            case PENTAGON: {
+                for (int i = 0; i < 5; i++) {
+                    var cur = sNodes.get(i);
+                    var next = sNodes.get((i + 1) % 5);
+                    g2.drawLine(cur.x(), cur.y(), next.x(), next.y());
+
+                    String target = "S" + i;
+                    views.stream()
+                            .filter(dto -> dto.name().equals(target))
+                            .findFirst()
+                            .ifPresent(v -> g2.drawLine(center.x(), center.y(), v.x(), v.y())
+                            );
+                }
+            }
+
+            case HEXAGON: {
+                for (int i = 0; i < 6; i++) {
+                    var cur = sNodes.get(i);
+                    var next = sNodes.get((i + 1) % 6);
+                    g2.drawLine(cur.x(), cur.y(), next.x(), next.y());
+
+                    String target = "S" + i;
+                    views.stream()
+                            .filter(dto -> dto.name().equals(target))
+                            .findFirst()
+                            .ifPresent(v -> g2.drawLine(center.x(), center.y(), v.x(), v.y())
+                            );
+                }
+            }
         }
     }
 }

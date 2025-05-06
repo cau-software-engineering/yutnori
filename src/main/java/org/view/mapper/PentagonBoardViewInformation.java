@@ -29,64 +29,73 @@ import org.core.domain.board.BoardType;
    */
 
 public enum PentagonBoardViewInformation implements ViewInformation {
-    // ─── 꼭짓점 & 중앙 분기 ────────────────────────────────
-    S0("S0", 1f,      1f     ),
-    S1("S1", 1f,      4f/9f  ),
-    S2("S2", 0.5f,    0f     ),
-    S3("S3", 0f,      4f/9f  ),
-    S4("S4", 0f,      1f     ),
-    S6("S6", 0.5f,    4f/9f  ),
 
-    // ─── 오른쪽 엣지 A1~A4 ───────────────────────────────
-    A1("A1", 1f,      8f/9f  ),
-    A2("A2", 1f,      7f/9f  ),
-    A3("A3", 1f,      6f/9f  ),
-    A4("A4", 1f,      5f/9f  ),
+    // 중심
+    S6("S6", 0.5000f, 0.5000f),
 
-    // ─── 오른쪽 분기 B1~B4 ───────────────────────────────
-    B1("B1", 1f,      4f/9f  ),
-    B2("B2", 1f,      3f/9f  ),
-    B3("B3", 1f,      2f/9f  ),
-    B4("B4", 1f,      1f/9f  ),
+    // 꼭짓점
+    S1("S1", 0.9755f, 0.3455f),
+    S2("S2", 0.5000f, 0.0000f),
+    S0("S0", 0.7939f, 0.9045f),
+    S5("S5", 0.7939f, 0.9045f),
+    S4("S4", 0.2061f, 0.9045f),
+    S3("S3", 0.0245f, 0.3455f),
 
-    // ─── 왼쪽 분기 C1~C4 ────────────────────────────────
-    C1("C1", 0f,      1f/9f  ),
-    C2("C2", 0f,      2f/9f  ),
-    C3("C3", 0f,      3f/9f  ),
-    C4("C4", 0f,      4f/9f  ),
+    // S2→S3
+    C1("C1", 0.4049f, 0.0691f),
+    C2("C2", 0.3098f, 0.1382f),
+    C3("C3", 0.2147f, 0.2073f),
+    C4("C4", 0.1196f, 0.2764f),
 
-    // ─── 왼쪽 엣지 D1~D4 ────────────────────────────────
-    D1("D1", 0f,      5f/9f  ),
-    D2("D2", 0f,      6f/9f  ),
-    D3("D3", 0f,      7f/9f  ),
-    D4("D4", 0f,      8f/9f  ),
+    // S1→S2
+    B1("B1", 0.8804f, 0.2764f),
+    B2("B2", 0.7853f, 0.2073f),
+    B3("B3", 0.6902f, 0.1382f),
+    B4("B4", 0.5951f, 0.0691f),
 
-    // ─── 바닥 가로 분기 E1~E4 ────────────────────────────
-    E1("E1", 1f/6f,   1f     ),
-    E2("E2", 2f/6f,   1f     ),
-    E3("E3", 3f/6f,   1f     ),
-    E4("E4", 4f/6f,   1f     ),
+    // S3→S4
+    D1("D1", 0.0608f, 0.4573f),
+    D2("D2", 0.0971f, 0.5691f),
+    D3("D3", 0.1335f, 0.6809f),
+    D4("D4", 0.1698f, 0.7927f),
 
-    // ─── 중간 가로 분기 F1~F2 ────────────────────────────
-    F1("F1", 5f/6f,   4f/9f  ),
-    F2("F2", 4f/6f,   4f/9f  ),
+    // S4→S0
+    E1("E1", 0.3237f, 0.9045f),
+    E2("E2", 0.4412f, 0.9045f),
+    E3("E3", 0.5588f, 0.9045f),
+    E4("E4", 0.6763f, 0.9045f),
 
-    // ─── 세로 분기 G1~G2 ────────────────────────────────
-    G1("G1", 3f/6f,   1f/9f  ),
-    G2("G2", 3f/6f,   2f/9f  ),
+    // S0→S1
+    A1("A1", 0.8302f, 0.7927f),
+    A2("A2", 0.8665f, 0.6809f),
+    A3("A3", 0.9029f, 0.5691f),
+    A4("A4", 0.9392f, 0.4573f),
 
-    // ─── 가로 분기 H1~H2 ────────────────────────────────
-    H1("H1", 1f/6f,   4f/9f  ),
-    H2("H2", 2f/6f,   4f/9f  ),
+    // S2→S6
+    G1("G1", 0.5000f, 0.1667f),
+    G2("G2", 0.5000f, 0.3333f),
 
-    // ─── 대각선 분기 I1~I2, J1~J2 ───────────────────────
-    I1("I1", 2f/6f,   5f/9f  ),
-    I2("I2", 2f/6f,   8f/9f  ),
-    J1("J1", 4f/6f,   5f/9f  ),
-    J2("J2", 4f/6f,   8f/9f  );
+    // S3→S6
+    H1("H1", 0.1830f, 0.3970f),
+    H2("H2", 0.3415f, 0.4485f),
+
+    // S1→S6
+    F2("F2", 0.6585f, 0.4485f),
+    F1("F1", 0.8170f, 0.3970f),
+
+    // S4→S6
+    I1("I1", 0.4020f, 0.6348f),
+    I2("I2", 0.3041f, 0.7697f),
+
+    // S5→S6
+    J1("J1", 0.5980f, 0.6348f),
+    J2("J2", 0.6959f, 0.7697f);
+
+
 
     private final String nodeName;
-    private final float rx, ry;  // 보드 크기에 대한 상대위치 (0~1)
+    private final float rx, ry;
+    private static final float SPREAD = 1.3f;
 
     PentagonBoardViewInformation(String nodeName, float rx, float ry) {
         this.nodeName = nodeName;
@@ -106,11 +115,15 @@ public enum PentagonBoardViewInformation implements ViewInformation {
 
     @Override
     public int getX(int margin, int size) {
-        return margin + Math.round(rx * size);
+        float dx = rx - 0.5f;
+        float scaledRx = 0.5f + dx * SPREAD;
+        return margin + Math.round(scaledRx * size);
     }
 
     @Override
     public int getY(int margin, int size) {
-        return margin + Math.round(ry * size);
+        float dy = ry - 0.5f;
+        float scaledRy = 0.5f + dy * SPREAD;
+        return margin + Math.round(scaledRy * size);
     }
 }
