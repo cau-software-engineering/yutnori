@@ -42,6 +42,10 @@ public class Board {
             return boards.get("end");
         }
 
+        if(currentNode.equals("A1")) {
+            return boards.get("S0");
+        }
+
         Node startNode = boards.get(beforeNode);
         List<Node> nextNodes = new ArrayList<>();
         nextNodes.add(startNode);

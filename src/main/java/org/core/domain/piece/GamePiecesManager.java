@@ -64,9 +64,24 @@ public class GamePiecesManager {
         startPointPieces.add(restartPieces);
     }
 
-    public GamePieces groupPieces(String movingPieceId, String groupingPieceId) {
+    public GamePieces groupPieces(String movingPieceId, String groupingPieceId, String startNodeName) {
         GamePieces movingPiece = findById(movingPieceId);
         GamePieces groupingPiece = findById(groupingPieceId);
+
+        //도착 노드의 말을 기준으로 업혀짐
+        if(startNodeName.equals(movingPiece.getPlace())) {
+            groupingPiece.groupWith(movingPiece);
+            gamePieces.get(movingPiece.getPlace())
+                    .remove(movingPiece);
+            return groupingPiece;
+        }
+
+        if(startNodeName.equals(groupingPiece.getPlace())) {
+            movingPiece.groupWith(groupingPiece);
+            gamePieces.get(groupingPiece.getPlace())
+                    .remove(groupingPiece);
+            return movingPiece;
+        }
 
         movingPiece.groupWith(groupingPiece);
         gamePieces.get(groupingPiece.getPlace())
