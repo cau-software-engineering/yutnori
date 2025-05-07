@@ -46,19 +46,22 @@ public class BoardPanel extends JPanel {
                 .sorted(Comparator.comparingInt(dto -> Integer.parseInt(dto.name().substring(1))))
                 .toList();
 
-        var center = views.stream()
-                .filter(dto -> dto.name().equals("S6"))
-                .findFirst()
-                .orElseThrow();
+
 
         switch (gameSM.context.boardType) {
 
             case SQUARE:
                 g2.drawRect(MARGIN, MARGIN, SIZE, SIZE);
-                g2.drawLine(MARGIN, MARGIN, SIZE + SIZE, SIZE + SIZE);
+                g2.drawLine(MARGIN, MARGIN, MARGIN + SIZE, MARGIN + SIZE);
                 g2.drawLine(MARGIN + SIZE, MARGIN, MARGIN, MARGIN + SIZE);
 
+                break;
+
             case PENTAGON: {
+                var center = views.stream()
+                        .filter(dto -> dto.name().equals("S6"))
+                        .findFirst()
+                        .orElseThrow();
                 for (int i = 0; i < 5; i++) {
                     var cur = sNodes.get(i);
                     var next = sNodes.get((i + 1) % 5);
@@ -71,9 +74,14 @@ public class BoardPanel extends JPanel {
                             .ifPresent(v -> g2.drawLine(center.x(), center.y(), v.x(), v.y())
                             );
                 }
+                break;
             }
 
             case HEXAGON: {
+                var center = views.stream()
+                        .filter(dto -> dto.name().equals("S6"))
+                        .findFirst()
+                        .orElseThrow();
                 for (int i = 0; i < 6; i++) {
                     var cur = sNodes.get(i);
                     var next = sNodes.get((i + 1) % 6);
@@ -85,7 +93,9 @@ public class BoardPanel extends JPanel {
                             .findFirst()
                             .ifPresent(v -> g2.drawLine(center.x(), center.y(), v.x(), v.y())
                             );
+
                 }
+                break;
             }
         }
     }
