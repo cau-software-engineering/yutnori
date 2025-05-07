@@ -12,10 +12,12 @@ public class GamePieces {
     private final int team;
     private final List<GamePiece> pieces;
     private String place;
+    private String beforePlace;
 
     public GamePieces(int team, String place, List<GamePiece> pieces) {
         validateTeamNumber(team);
         this.place = place;
+        this.beforePlace = place;
         this.id = UUID.randomUUID().toString();
         this.team = team;
         this.pieces = pieces;
@@ -27,8 +29,8 @@ public class GamePieces {
         }
     }
 
-    //TODO 불변으로 바꾸기
     public void moveTo(String place) {
+        this.beforePlace = this.place;
         this.place = place;
     }
 
@@ -38,10 +40,6 @@ public class GamePieces {
 
     public boolean isSame(String pieceId){
         return this.id.equals(pieceId);
-    }
-
-    public boolean onSamePlace(GamePieces gamePiece) {
-        return this.place.equals(gamePiece.place);
     }
 
     public void groupWith(GamePieces gamePiece) {
@@ -58,6 +56,10 @@ public class GamePieces {
 
     public String getPlace() {
         return place;
+    }
+
+    public String getBeforePlace() {
+        return beforePlace;
     }
 
     public int getTeam() {

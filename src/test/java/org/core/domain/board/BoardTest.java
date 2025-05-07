@@ -51,7 +51,7 @@ class BoardTest {
         /*
         * : 출발지
         $ : 도착지
-        S2  -  B4  -  B3  -  B2  -  $  -     *
+        S2  -  B4  -  B3  -  B2  -  B1  -     *
          |  F1                         $     |
         C1                                   A4
          |       F2               E2         |
@@ -65,9 +65,9 @@ class BoardTest {
                                           |
                                           END
          */
-        @DisplayName("S1 -> B1, E1 : 코너에서 시작하는 경우 두 개의 다음 노드를 반환된다")
+        @DisplayName("S1 -> E1 : 코너에서 시작하는 경우 꺾는 루트가 빠르면 무조건 꺾는다")
         @Test
-        void return_two_node_when_start_from_corner() {
+        void return_center_path_when_center_path_is_shorter() {
             SquareBoardCreator creator = new SquareBoardCreator();
             Board board = creator.initialize();
 
@@ -77,8 +77,42 @@ class BoardTest {
                     .toList();
 
             assertAll(
-                    () -> assertThat(nextNodeNames).hasSize(2),
-                    () -> assertThat(nextNodeNames).containsExactly("B1", "E1")
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly("E1")
+            );
+        }
+
+        /*
+        * : 출발지
+        $ : 도착지
+        S2  -  B4  -  B3  -  B2  -  B1  -     *
+         |  F1                         $     |
+        C1                                   A4
+         |       F2               E2         |
+        C2                                   A3
+         |                S4                 |
+        C3                                   A2
+         |       E3               F3         |
+        C4                                   A1
+         |  E4                         F4    |
+        S3  -  D1  -  D2  -  D3  -  D4  - S5 S0
+                                          |
+                                          END
+         */
+        @DisplayName("S3 -> D1 : 코너에서 시작하는 경우 직진 루트가 빠르면 직진한다")
+        @Test
+        void return_straight_path_when_straight_path_is_shorter() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            List<String> nextNodeNames = board.next("S3", YutResult.DO)
+                    .stream()
+                    .map(Node::getName)
+                    .toList();
+
+            assertAll(
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly("D1")
             );
         }
 
@@ -119,7 +153,7 @@ class BoardTest {
         /*
         * : 출발지
         $ : 도착지
-        S2  -  $  -  B3  -  B2  -  B1  -  *
+        S2  -  B4  -  B3  -  B2  -  B1  -  *
          |  F1                         E1  |
         C1                                 A4
          |       F2              E2        |
@@ -131,7 +165,7 @@ class BoardTest {
          |  E4                         F4  |
         S3  -  D1  -  D2  -  D3  -  D4  -  S0
          */
-        @DisplayName("S1 -> E3, B4 : 코너에서 직진하는 경우 같은 라인의 다음 노드와 직진하는 루트를 반환한다")
+        @DisplayName("S1 -> E3 : 코너에서 직진하는 경우 같은 라인의 다음 노드와 직진하는 루트를 반환한다")
         @Test
         void return_straight_node_when_passed_away_central_from_corner() {
             SquareBoardCreator creator = new SquareBoardCreator();
@@ -143,8 +177,8 @@ class BoardTest {
                     .toList();
 
             assertAll(
-                    () -> assertThat(nextNodeNames).hasSize(2),
-                    () -> assertThat(nextNodeNames).containsExactly("B4", "E3")
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly( "E3")
             );
         }
 
@@ -246,37 +280,6 @@ class BoardTest {
                     () -> assertThat(nextNode.get(0).isEnd()).isTrue()
             );
         }
-
-        /*
-        * : 출발지
-        $ : 도착지
-        S2  -  *  -  B3  -  B2  -  B1  -       S1
-         |  F1                         E1      |
-        C1                                     A4
-         |       F2              E2            |
-        C2                                     A3
-         |                S4                   |
-        C3                                     A2
-         |       E3              F3            |
-        C4                                     A1
-         |  E4                          F4     |
-        S3  -  D1  -  D2  -  D3  -  D4  - S5   *
-                                          |  /
-                                          $
-       */
-        @DisplayName("S0 -> END : 시작노드에서 백도가 나오면 도착으로 취급한다")
-        @Test
-        void return_end_node_when_backdo_from_start() {
-            SquareBoardCreator creator = new SquareBoardCreator();
-            Board board = creator.initialize();
-
-            List<Node> nextNode = board.next("S0", YutResult.BACK_DO);
-
-            assertAll(
-                    () -> assertThat(nextNode).hasSize(1),
-                    () -> assertThat(nextNode.get(0).isEnd()).isTrue()
-            );
-        }
     }
 
     @Nested
@@ -340,7 +343,7 @@ class BoardTest {
      |                                                      |
     *         $       G3      S6      G2        G1          S1
      |                                                      |
-      $                                                   A4
+      E1                                                   A4
        |                   H3       I3                    |
         E2                                               A3
          |                                              |
@@ -352,9 +355,9 @@ class BoardTest {
                                                  |
                                                 END
         */
-        @DisplayName("S4 -> E1, G4 : 코너에서 시작하는 경우 두 개의 다음 노드를 반환된다")
+        @DisplayName("S4 -> G4 : 코너에서 시작하는 경우, 중앙으로 꺾는게 빠르면 꺾는다")
         @Test
-        void return_two_node_when_start_from_corner() {
+        void return_center_path_when_center_is_shorter() {
             HexagonBoardCreator creator = new HexagonBoardCreator();
             Board board = creator.initialize();
 
@@ -364,8 +367,53 @@ class BoardTest {
                     .toList();
 
             assertAll(
-                    () -> assertThat(nextNodeNames).hasSize(2),
-                    () -> assertThat(nextNodeNames).containsExactly("E1", "G4")
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly("G4")
+            );
+        }
+
+        /*
+        * : 출발지
+        $ : 도착지
+
+             S3  -  C4  -  C3  -  C2  -  C1  -   S2
+            |                                       |
+           D1                                       B4
+          |       I1                      H1          |
+         D2                                           B3
+        |                                               |
+       D3                I2         H2                  B2
+      |                                                   |
+     D4                                                   B1
+    |                                                      |
+   *         $       G3      S6      G2        G1          S1
+    |                                                      |
+     E1                                                   A4
+      |                   H3       I3                    |
+       E2                                               A3
+        |                                              |
+         E3        H4                     I4          A2
+          |                                          |
+           E4                                       A1
+            |                                      |
+             S5  -  F1  -  F2  -  F3  -  F4  - S7 S0
+                                                |
+                                               END
+       */
+        @DisplayName("S4 -> G4 : 코너에서 시작하는 경우, 직진이 빠르면 직진한다")
+        @Test
+        void return_straight_path_when_straight_is_shorter() {
+            HexagonBoardCreator creator = new HexagonBoardCreator();
+            Board board = creator.initialize();
+
+            List<String> nextNodeNames = board.next("S5", YutResult.DO)
+                    .stream()
+                    .map(Node::getName)
+                    .toList();
+
+            assertAll(
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly("F1")
             );
         }
 
@@ -551,48 +599,6 @@ class BoardTest {
                     () -> assertThat(nextNode.get(0).isEnd()).isTrue()
             );
         }
-
-        /*
-        * : 출발지
-        $ : 도착지
-
-             S3  -  C4  -  C3  -  C2  -  C1  -   S2
-            |                                       |
-           D1                                       B4
-          |       I1                      H1          |
-         D2                                           B3
-        |                                               |
-       D3                I2         H2                  B2
-      |                                                   |
-     D4                                                   $
-    |                                                      |
-   S4        G4       G3      S6      G2         G1        S1
-    |                                                      |
-     E1                                                   *
-      |                   H3       I3                    |
-       E2                                               A3
-        |                                              |
-         E3        H4                     I4          A2
-          |                                          |
-           E4                                       A1
-            |                                      |
-             S5  -  F1  -  F2  -  F3  -  F4  - S7 S0
-                                                |
-                                               END
-         */
-        @DisplayName("S0 -> END : 시작노드에서 백도가 나오면 도착으로 취급한다")
-        @Test
-        void return_end_node_when_backdo_from_start() {
-            HexagonBoardCreator creator = new HexagonBoardCreator();
-            Board board = creator.initialize();
-
-            List<Node> nextNode = board.next("S0", YutResult.BACK_DO);
-
-            assertAll(
-                    () -> assertThat(nextNode).hasSize(1),
-                    () -> assertThat(nextNode.get(0).isEnd()).isTrue()
-            );
-        }
     }
 
     @Nested
@@ -667,9 +673,9 @@ class BoardTest {
                                                |
                                               END
       */
-        @DisplayName("S3 -> H1, D1 : 코너에서 시작하는 경우 두 개의 다음 노드를 반환된다")
+        @DisplayName("S3 -> H1 코너에서 시작하는 경우, 중앙으로 꺾는 것이 더 빠르면 무조건 중앙으로 꺾는다")
         @Test
-        void return_two_node_when_start_from_corner() {
+        void return_center_path_when_get_into_center_is_shorter() {
             PentagonBoardCreator creator = new PentagonBoardCreator();
             Board board = creator.initialize();
 
@@ -679,8 +685,52 @@ class BoardTest {
                     .toList();
 
             assertAll(
-                    () -> assertThat(nextNodeNames).hasSize(2),
-                    () -> assertThat(nextNodeNames).containsExactlyInAnyOrder("H1", "D1")
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactlyInAnyOrder("H1")
+            );
+        }
+
+        /*'
+      * : 출발지
+      $ : 도착지
+                                S2
+                             |      |
+                          C1     G1    B4
+                        |                  |
+                    C2           |            B3
+                 |                                |
+              C3                 G2                  B2
+           |                                            |
+       C4                        |                         B1
+     |                                                         |
+   S3    -   H1    -   H2    -   S6   -   F2    -   F1    -      S1
+     |                                                          |
+      D1                     /      \                         A4
+        |                  I1        J1                      |
+         D2                                                A3
+          |             /                \                |
+           D3                                           A2
+            |       I2                       J2        |
+             D4                                       A1
+              |  /                               \   |
+               S4  -  E1  -  E2  -  E3  -  E4  - S5 S0
+                                              |
+                                             END
+     */
+        @DisplayName("S4 -> E2 코너에서 시작하는 경우, 직진으로 진행하는 것이 더 빠르면 직진으로 간다")
+        @Test
+        void return_straight_path_when_get_into_center_is_longer() {
+            PentagonBoardCreator creator = new PentagonBoardCreator();
+            Board board = creator.initialize();
+
+            List<String> nextNodeNames = board.next("S4", YutResult.GAE)
+                    .stream()
+                    .map(Node::getName)
+                    .toList();
+
+            assertAll(
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactlyInAnyOrder("E2")
             );
         }
 
@@ -853,47 +903,6 @@ class BoardTest {
             Board board = creator.initialize();
 
             List<Node> nextNode = board.next("J1", YutResult.MO);
-
-            assertAll(
-                    () -> assertThat(nextNode).hasSize(1),
-                    () -> assertThat(nextNode.get(0).isEnd()).isTrue()
-            );
-        }
-
-        /*'
-       * : 출발지
-       $ : 도착지
-                                 S2
-                              |      |
-                           C1     G1    B4
-                         |                  |
-                     C2           |            B3
-                  |                                |
-               C3                 G2                  B2
-            |                                            |
-        C4                        |                         $
-      |                                                         |
-    S3    -   H1    -   H2    -   S6   -   F2    -   F1    -      S1
-      |                                                          |
-       D1                     /      \                         *
-         |                  I1        J1                      |
-          D2                                                A3
-           |             /                \                |
-            D3                                           A2
-             |       I2                       J2        |
-              D4                                       A1
-               |  /                               \   |
-                S4  -  E1  -  E2  -  E3  -  E4  - S5 S0
-                                               |
-                                              END
-      */
-        @DisplayName("S0 -> END : 시작노드에서 백도가 나오면 도착으로 취급한다")
-        @Test
-        void return_end_node_when_backdo_from_start() {
-            PentagonBoardCreator creator = new PentagonBoardCreator();
-            Board board = creator.initialize();
-
-            List<Node> nextNode = board.next("S0", YutResult.BACK_DO);
 
             assertAll(
                     () -> assertThat(nextNode).hasSize(1),

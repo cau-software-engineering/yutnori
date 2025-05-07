@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class ScoreBoard {
 
-    private static final int MIN_PIECE_NUMBER = 1;
+    private static final int MIN_PIECE_NUMBER = 2;
     private static final int MAX_PIECE_NUMBER = 5;
-    private static final int MIN_TEAM_NUMBER = 1;
+    private static final int MIN_TEAM_NUMBER = 2;
     private static final int MAX_TEAM_NUMBER = 4;
     private static final int INITIAL_SCORE = 0;
 

@@ -35,7 +35,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
         CornerNode s5 = new CornerNode(List.of("S5"), "S5");
         EndNode endNode = new EndNode("end");
 
-        SquareCentralNode s4 = new SquareCentralNode(List.of("S4"), "S4", new ArrayList<>(), new ArrayList<>());
+        SquareCentralNode s4 = new SquareCentralNode(List.of("S4"), "S4", new ArrayList<>());
 
         NormalNode a1 = new NormalNode("A1");
         NormalNode a2 = new NormalNode("A2");
@@ -76,6 +76,10 @@ public class SquareBoardCreator extends AbstractBoardCreator {
         linkCentral(s2, f1, f2, s4, f3, f4, s5);
         linkEnd(s0, s5, endNode);
 
+
+        s3.setStandNext(d1); //S3의 경우는 코너에 위치해도 무조건 직진
+        s0.setStandNext(a1); //s0의 경우는 무조건 a1으로 진행
+
         List<Node> nodes = List.of(
                 a1, a2, a3, a4,
                 b1, b2, b3, b4,
@@ -84,7 +88,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
                 e1, e2, e3, e4,
                 f1, f2, f3, f4,
                 s0, s1, s2, s3,
-                s4, s5
+                s4, s5, endNode
         );
         return createBoard(nodes);
     }
@@ -99,15 +103,10 @@ public class SquareBoardCreator extends AbstractBoardCreator {
             CornerNode end
     ) {
         start.setStandNext(node1);
-        node1.setBefore(start);
         node1.setNext(node2);
-        node2.setBefore(start);
         node2.setNext(central);
-        central.addBefore(node2);
         central.addNext(node3);
-        node3.setBefore(central);
         node3.setNext(node4);
-        node4.setBefore(node3);
         node4.setNext(end);
     }
 }

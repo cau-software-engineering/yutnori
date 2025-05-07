@@ -6,8 +6,6 @@ public interface Node {
 
     List<Node> next(Node start);
 
-    List<Node> before();
-
     List<String> getAllNodeNames();
 
     String getName();

@@ -15,13 +15,14 @@ public class TurnIdleState extends TurnState {
   @Override
   public void handleEvent(TurnGenerateYutEvent event) {
     // 윷 생성
-    YutResult yutResult = context.yutGenerator.generate(event.request.options(),
-        event.request.yutResult());
+    YutResult yutResult = context.yutGenerator.generate(
+            event.request.options(),
+            event.request.yutResult()
+    );
 
     // 윷 결과를 추가
     context.addYutResult(yutResult);
 
     stateManager.setCurrentState(new TurnGeneratedState(context, stateManager));
   }
-
 }

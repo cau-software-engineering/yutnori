@@ -6,18 +6,15 @@ public class PolygonCentralNode implements Node {
 
     private final List<String> allNodeNames;
     private final String name;
-    private final List<Node> before;
     private Node shortestPathNode;
     private Node secondShortestPathNode;
 
     public PolygonCentralNode(
             List<String> allNodeNames,
-            String name,
-            List<Node> before
+            String name
     ) {
         this.allNodeNames = allNodeNames;
         this.name = name;
-        this.before = before;
     }
 
     @Override
@@ -27,16 +24,6 @@ public class PolygonCentralNode implements Node {
         }
         return List.of(secondShortestPathNode);
     }
-
-    @Override
-    public List<Node> before() {
-        return before;
-    }
-
-    public void addBefore(Node node) {
-        before.add(node);
-    }
-
 
     public void setSecondShortestPathNode(Node secondShortestPathNode) {
         this.secondShortestPathNode = secondShortestPathNode;

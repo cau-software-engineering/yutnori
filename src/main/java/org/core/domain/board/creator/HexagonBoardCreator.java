@@ -49,7 +49,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
         CornerNode s7 = new CornerNode(List.of(), "S7");
         EndNode endNode = new EndNode("end");
 
-        PolygonCentralNode s6 = new PolygonCentralNode(List.of(), "S6", new ArrayList<>());
+        PolygonCentralNode s6 = new PolygonCentralNode(List.of(), "S6");
 
         NormalNode a1 = new NormalNode("A1");
         NormalNode a2 = new NormalNode("A2");
@@ -104,6 +104,8 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
         linkOneSide(s4, e1, e2, e3, e4, s5);
         linkOneSide(s5, f1, f2, f3, f4, s7);
 
+        s5.setStandNext(f1); //s5인 경우에 위치해도 직진 거리가 더 짧기 때문에
+        s0.setStandNext(a1); //s0의 경우는 무조건 a1으로 진행
         s6.setShortestPathNode(i3);
         s6.setSecondShortestPathNode(h3);
 
@@ -128,7 +130,8 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
                 h1, h2, h3, h4,
                 i1, i2, i3, i4,
                 s0, s1, s2, s3,
-                s4, s5, s6, s7
+                s4, s5, s6, s7,
+                endNode
         );
         return createBoard(nodes);
     }
@@ -140,11 +143,8 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
             PolygonCentralNode central
     ) {
         start.setStandNext(node1);
-        node1.setBefore(start);
         node1.setNext(node2);
-        node2.setBefore(start);
         node2.setNext(central);
-        central.addBefore(node2);
     }
 
     private void linkCentralToCorner(
@@ -153,10 +153,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
             NormalNode node2,
             CornerNode corner
     ) {
-        node1.setBefore(central);
         node1.setNext(node2);
-        node2.setBefore(node1);
         node2.setNext(corner);
-        corner.setBefore(node2);
     }
 }

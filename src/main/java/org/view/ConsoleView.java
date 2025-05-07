@@ -43,7 +43,7 @@ public class ConsoleView {
     System.out.println("몇 명의 팀으로 진행할까요? (최소 2개, 최대 4개 팀) : ");
     int teamCount = Integer.parseInt(readInput());
 
-    System.out.println("몇 개의 말로 진행할까요? (최소 1개, 최대 5개 팀) : ");
+    System.out.println("몇 개의 말로 진행할까요? (최소 2개, 최대 5개 말) : ");
     int pieceCount = Integer.parseInt(readInput());
 
     System.out.println("어떤 보드로 진행할까요? (4,5,6 중 선택) : ");
@@ -81,20 +81,18 @@ public class ConsoleView {
         System.out.println("윷을 또 던질 수 있어요");
         generateYut();
       } else if (state instanceof TurnWaitForActionState) {
+        BoardService boardService = gameStateMachine.context.boardService;
+
         // 윷 결과 선택
         YutResult yutResult = chooseYutResult();
 
         // 움직일 말 선택
         GamePieces movingPiece = readMovingPiece();
 
-        BoardService boardService = gameStateMachine.context.boardService;
-        List<String> movablePlaces = boardService.findMovablePlaces(movingPiece.getPlace(),
-            yutResult);
-
+        List<String> movablePlaces = boardService.findMovablePlaces(movingPiece.getPlace(), yutResult);
         String movingPlace = chooseMovingPlace(movablePlaces);
 
-        turnStateMachine.dispatchEvent(
-            new TurnMovePieceEvent(movingPiece.getId(), movingPlace, yutResult));
+        turnStateMachine.dispatchEvent(new TurnMovePieceEvent(movingPiece.getId(), movingPlace, yutResult));
       } else if (state instanceof TurnKilledOtherState) {
         printCatchMessage();
       } else if (state instanceof TurnTookPieceState) {

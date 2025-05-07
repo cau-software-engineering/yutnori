@@ -9,6 +9,7 @@ import java.util.Map;
 public class GamePiecesManager {
 
     private static final String GAME_START_PLACE_NAME = "S0";
+    private static final String GAME_END_PLACE_NAME = "end";
 
     private final Map<String, List<GamePieces>> gamePieces;
 
@@ -80,7 +81,10 @@ public class GamePiecesManager {
         piece.moveTo(place);
 
         gamePieces.putIfAbsent(place, new ArrayList<>());
-        gamePieces.get(place).add(piece);
+
+        if(!place.equals(GAME_END_PLACE_NAME)) {
+            gamePieces.get(place).add(piece);
+        }
     }
 
     public GamePieces findById(String pieceId) {
@@ -89,5 +93,10 @@ public class GamePiecesManager {
                 .filter(piece -> piece.isSame(pieceId))
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("말이 존재하지 않습니다."));
+    }
+
+    public GamePieces findByPlace(String place) {
+        List<GamePieces> pieces = gamePieces.get(place);
+        return pieces.get(0);
     }
 }

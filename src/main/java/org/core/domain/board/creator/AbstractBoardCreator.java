@@ -12,7 +12,6 @@ import org.core.domain.board.NormalNode;
 public abstract class AbstractBoardCreator {
 
     protected final void linkEnd(CornerNode startNode, CornerNode cornerNode, EndNode end) {
-        startNode.setBefore(end);
         cornerNode.setForwardNext(end);
         cornerNode.setStandNext(end);
     }
@@ -26,15 +25,10 @@ public abstract class AbstractBoardCreator {
             CornerNode end
     ) {
         start.setForwardNext(node1);
-        node1.setBefore(start);
         node1.setNext(node2);
-        node2.setBefore(node1);
         node2.setNext(node3);
-        node3.setBefore(node2);
         node3.setNext(node4);
-        node4.setBefore(node3);
         node4.setNext(end);
-        end.setBefore(node4);
     }
 
     protected final Board createBoard(List<Node> nodes) {

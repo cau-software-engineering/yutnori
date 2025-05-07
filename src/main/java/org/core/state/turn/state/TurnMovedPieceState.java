@@ -39,8 +39,8 @@ public class TurnMovedPieceState extends TurnState {
       return;
     }
 
-    // 남은 윷이 있을 경우
-    if (context.hasYutResult()) {
+    // 남은 윷이 있을 경우 + 게임이 안 끝났을 경우
+    if (context.hasYutResult() && !context.getScoreBoard().isEnd()) {
       this.handleEvent(new TurnNextActionEvent());
     } else {
       this.handleEvent(new TurnNextTurnEvent());

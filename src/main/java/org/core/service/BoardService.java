@@ -25,6 +25,12 @@ public class BoardService {
     }
 
     public List<String> findMovablePlaces(String from, YutResult yutResult) {
+        if(yutResult == YutResult.BACK_DO){
+            GamePieces piece = gamePiecesManager.findByPlace(from);
+            Node beforeNode = board.findBeforeNode(from, piece.getBeforePlace());
+            return List.of(beforeNode.getName());
+        }
+
         return board.next(from, yutResult).stream()
                 .map(Node::getName)
                 .toList();

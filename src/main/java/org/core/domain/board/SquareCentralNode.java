@@ -7,13 +7,11 @@ public class SquareCentralNode implements Node {
 
     private final List<String> allNodeNames;
     private final String name;
-    private final List<Node> before;
     private final List<Node> next;
 
-    public SquareCentralNode(List<String> allNodeNames, String name, List<Node> before, List<Node> next) {
+    public SquareCentralNode(List<String> allNodeNames, String name, List<Node> next) {
         this.allNodeNames = allNodeNames;
         this.name = name;
-        this.before = before;
         this.next = next;
     }
 
@@ -31,11 +29,6 @@ public class SquareCentralNode implements Node {
     }
 
     @Override
-    public List<Node> before() {
-        return before;
-    }
-
-    @Override
     public List<String> getAllNodeNames() {
         return allNodeNames;
     }
@@ -48,10 +41,6 @@ public class SquareCentralNode implements Node {
    public void addNext(Node node) {
         next.add(node);
    }
-
-    public void addBefore(Node node) {
-        before.add(node);
-    }
 
     @Override
     public boolean equals(Object o) {
