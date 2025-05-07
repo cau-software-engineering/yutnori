@@ -3,7 +3,7 @@ package org.core.domain.board;
 import java.util.stream.Stream;
 
 public enum BoardType {
-    SQUARE(4, "SO","S5"),
+    SQUARE(4, "S0","S5"),
     PENTAGON(5, "S0", "S5"),
     HEXAGON(6, "S0", "S7"),
     ;

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GamePiecesManager {
 
@@ -36,14 +37,14 @@ public class GamePiecesManager {
         List<GamePieces> piecesOnPlace = gamePieces.getOrDefault(place, new ArrayList<>());
         return piecesOnPlace.stream()
                 .filter(pieces -> !pieces.isSameTeam(team))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public List<GamePieces> findGroupablePieces(String place, int team) {
         List<GamePieces> piecesOnPlace = gamePieces.getOrDefault(place, new ArrayList<>());
         return piecesOnPlace.stream()
                 .filter(pieces -> pieces.isSameTeam(team))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public void catchPiece(String pieceId) {

@@ -77,7 +77,7 @@ public class BoardService {
     }
 
     public GamePieces groupPieces(String piecesId1, String piecesId2) {
-        return gamePiecesManager.groupPieces(piecesId1, piecesId2, board.endNode());
+        return gamePiecesManager.groupPieces(piecesId1, piecesId2, board.startNode());
     }
 
     public void moveTo(String pieceId, String place) {
