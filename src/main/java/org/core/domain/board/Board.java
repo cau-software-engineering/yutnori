@@ -9,9 +9,11 @@ import org.core.domain.yut.YutResult;
 public class Board {
 
     private final Map<String, Node> boards;
+    private final BoardType type;
 
-    public Board(Map<String, Node> boards) {
+    public Board(Map<String, Node> boards, BoardType type) {
         this.boards = boards;
+        this.type = type;
     }
 
     public List<Node> next(String startNodeName, YutResult result) {
@@ -56,5 +58,13 @@ public class Board {
             }
             nextNodes = tempNodes;
         }
+    }
+
+    public String startNode() {
+        return type.getStartNodeName();
+    }
+
+    public String endNode() {
+        return type.getFinalNodeName();
     }
 }

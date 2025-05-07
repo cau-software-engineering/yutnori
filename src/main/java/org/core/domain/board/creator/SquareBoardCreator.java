@@ -2,6 +2,7 @@ package org.core.domain.board.creator;
 
 import java.util.List;
 import org.core.domain.board.Board;
+import org.core.domain.board.BoardType;
 import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
@@ -25,7 +26,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
                                        |
                                       END
      */
-    public Board initialize() {
+    public Board initialize(BoardType type) {
 
         CornerNode s0 = new CornerNode(List.of("S0", "AO", "D5", "F5"), "S0");
         CornerNode s1 = new CornerNode(List.of("S1", "EO", "BO", "A5"), "S1");
@@ -95,6 +96,6 @@ public class SquareBoardCreator extends AbstractBoardCreator {
                 s0, s1, s2, s3,
                 s4, s5, endNode
         );
-        return createBoard(nodes);
+        return createBoard(nodes, type);
     }
 }

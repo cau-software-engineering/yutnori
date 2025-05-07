@@ -25,6 +25,6 @@ public enum BoardCreator {
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("일치하는 보드 타입이 없습니다"))
                 .boardCreator
-                .initialize();
+                .initialize(boardType);
     }
 }

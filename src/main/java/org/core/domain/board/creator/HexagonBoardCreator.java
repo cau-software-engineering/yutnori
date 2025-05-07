@@ -2,6 +2,7 @@ package org.core.domain.board.creator;
 
 import java.util.List;
 import org.core.domain.board.Board;
+import org.core.domain.board.BoardType;
 import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
@@ -37,7 +38,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
         */
 
     @Override
-    public Board initialize() {
+    public Board initialize(BoardType type) {
 
         CornerNode s0 = new CornerNode(List.of(), "S0");
         CornerNode s1 = new CornerNode(List.of(), "S1");
@@ -132,6 +133,6 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
                 s4, s5, s6, s7,
                 endNode
         );
-        return createBoard(nodes);
+        return createBoard(nodes, type);
     }
 }

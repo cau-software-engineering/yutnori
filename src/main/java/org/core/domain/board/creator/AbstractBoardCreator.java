@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.core.domain.board.Board;
+import org.core.domain.board.BoardType;
 import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
@@ -32,10 +33,10 @@ public abstract class AbstractBoardCreator {
         node4.setNext(end);
     }
 
-    protected final Board createBoard(List<Node> nodes) {
+    protected final Board createBoard(List<Node> nodes, BoardType boardType) {
         Map<String, Node> map = nodes.stream()
                 .collect(Collectors.toMap(Node::getName, node -> node));
-        return new Board(map);
+        return new Board(map, boardType);
     }
 
     protected void linkCornerToCentral(
@@ -59,5 +60,5 @@ public abstract class AbstractBoardCreator {
         node2.setNext(corner);
     }
 
-    public abstract Board initialize();
+    public abstract Board initialize(BoardType boardType);
 }
