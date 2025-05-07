@@ -33,6 +33,8 @@ public class PieceDrawing {
     }
 
     public void draw(Graphics2D g2) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
 
         Map<String, List<PieceInfo>> grouped = new HashMap<>();
 

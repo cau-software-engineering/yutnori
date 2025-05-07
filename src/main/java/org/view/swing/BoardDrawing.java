@@ -29,7 +29,8 @@ public class BoardDrawing {
     public void draw(Graphics2D g2) {
         g2.setStroke(new BasicStroke(2f));
         g2.setColor(Color.BLACK);
-
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
 
         // 노드 그리기
         for (NodeViewDto dto : views) {
