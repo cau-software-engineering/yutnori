@@ -60,5 +60,5 @@ public abstract class AbstractBoardCreator {
         node2.setNext(corner);
     }
 
-    public abstract Board initialize(BoardType boardType);
+    public abstract Board initialize();
 }

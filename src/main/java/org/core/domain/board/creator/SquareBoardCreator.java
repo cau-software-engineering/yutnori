@@ -11,6 +11,8 @@ import org.core.domain.board.CentralNode;
 
 public class SquareBoardCreator extends AbstractBoardCreator {
 
+    private static final BoardType BOARD_TYPE = BoardType.SQUARE;
+
     /*
     S2  -  B4  -  B3  -  B2  -  B1  -    S1
      |  F1                         E1    |
@@ -26,7 +28,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
                                        |
                                       END
      */
-    public Board initialize(BoardType type) {
+    public Board initialize() {
 
         CornerNode s0 = new CornerNode(List.of("S0", "AO", "D5", "F5"), "S0");
         CornerNode s1 = new CornerNode(List.of("S1", "EO", "BO", "A5"), "S1");
@@ -96,6 +98,6 @@ public class SquareBoardCreator extends AbstractBoardCreator {
                 s0, s1, s2, s3,
                 s4, s5, endNode
         );
-        return createBoard(nodes, type);
+        return createBoard(nodes, BOARD_TYPE);
     }
 }

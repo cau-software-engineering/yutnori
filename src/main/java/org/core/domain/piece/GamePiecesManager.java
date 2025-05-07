@@ -14,7 +14,7 @@ public class GamePiecesManager {
     private final Map<String, List<GamePieces>> gamePieces;
 
     public GamePiecesManager(GamePieceInitializer initializer, int teamCount, int pieceCount) {
-        List<GamePieces> pieces = initializer.initialize(teamCount, pieceCount, GAME_START_PLACE_NAME);
+        List<GamePieces> pieces = initializer.initialize(teamCount, pieceCount);
         this.gamePieces = initializeGamePieces(pieces);
     }
 

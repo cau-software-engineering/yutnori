@@ -11,6 +11,8 @@ import org.core.domain.board.CentralNode;
 
 public class HexagonBoardCreator extends AbstractBoardCreator {
 
+    private static final BoardType BOARD_TYPE = BoardType.HEXAGON;
+
        /*
               S3  -  C4  -  C3  -  C2  -  C1  -   S2
              |                                       |
@@ -38,7 +40,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
         */
 
     @Override
-    public Board initialize(BoardType type) {
+    public Board initialize() {
 
         CornerNode s0 = new CornerNode(List.of(), "S0");
         CornerNode s1 = new CornerNode(List.of(), "S1");
@@ -133,6 +135,6 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
                 s4, s5, s6, s7,
                 endNode
         );
-        return createBoard(nodes, type);
+        return createBoard(nodes, BOARD_TYPE);
     }
 }

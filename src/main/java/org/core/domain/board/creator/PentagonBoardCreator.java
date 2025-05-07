@@ -11,6 +11,8 @@ import org.core.domain.board.CentralNode;
 
 public class PentagonBoardCreator extends AbstractBoardCreator {
 
+    private static final BoardType BOARD_TYPE = BoardType.PENTAGON;
+
     /*
                                   S2
                                |      |
@@ -37,7 +39,7 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
                                                END
        */
     @Override
-    public Board initialize(BoardType type) {
+    public Board initialize() {
 
         CornerNode s0 = new CornerNode(List.of(), "S0");
         CornerNode s1 = new CornerNode(List.of(), "S1");
@@ -124,6 +126,6 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
                 endNode
         );
 
-        return createBoard(nodes, type);
+        return createBoard(nodes, BOARD_TYPE);
     }
 }
