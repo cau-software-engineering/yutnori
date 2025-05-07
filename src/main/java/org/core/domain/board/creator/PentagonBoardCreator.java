@@ -1,13 +1,12 @@
 package org.core.domain.board.creator;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.core.domain.board.Board;
 import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
 import org.core.domain.board.NormalNode;
-import org.core.domain.board.PolygonCentralNode;
+import org.core.domain.board.CentralNode;
 
 public class PentagonBoardCreator extends AbstractBoardCreator {
 
@@ -47,7 +46,7 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
         CornerNode s5 = new CornerNode(List.of(), "S5");
         EndNode endNode = new EndNode("end");
 
-        PolygonCentralNode s6 = new PolygonCentralNode(List.of(), "S6");
+        CentralNode s6 = new CentralNode(List.of(), "S6");
 
         NormalNode a1 = new NormalNode("A1");
         NormalNode a2 = new NormalNode("A2");
@@ -125,26 +124,5 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
         );
 
         return createBoard(nodes);
-    }
-
-    private void linkCornerToCentral(
-            CornerNode start,
-            NormalNode node1,
-            NormalNode node2,
-            PolygonCentralNode central
-    ) {
-        start.setStandNext(node1);
-        node1.setNext(node2);
-        node2.setNext(central);
-    }
-
-    private void linkCentralToCorner(
-            PolygonCentralNode central,
-            NormalNode node1,
-            NormalNode node2,
-            CornerNode corner
-    ) {
-        node1.setNext(node2);
-        node2.setNext(corner);
     }
 }

@@ -1,13 +1,12 @@
 package org.core.domain.board.creator;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.core.domain.board.Board;
 import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
 import org.core.domain.board.NormalNode;
-import org.core.domain.board.SquareCentralNode;
+import org.core.domain.board.CentralNode;
 
 public class SquareBoardCreator extends AbstractBoardCreator {
 
@@ -35,7 +34,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
         CornerNode s5 = new CornerNode(List.of("S5"), "S5");
         EndNode endNode = new EndNode("end");
 
-        SquareCentralNode s4 = new SquareCentralNode(List.of("S4"), "S4", new ArrayList<>());
+        CentralNode s4 = new CentralNode(List.of("S4"), "S4");
 
         NormalNode a1 = new NormalNode("A1");
         NormalNode a2 = new NormalNode("A2");
@@ -72,10 +71,16 @@ public class SquareBoardCreator extends AbstractBoardCreator {
         linkOneSide(s2, c1, c2, c3, c4, s3);
         linkOneSide(s2, c1, c2, c3, c4, s3);
         linkOneSide(s3, d1, d2, d3, d4, s5);
-        linkCentral(s1, e1, e2, s4, e3, e4, s3);
-        linkCentral(s2, f1, f2, s4, f3, f4, s5);
-        linkEnd(s0, s5, endNode);
+        linkCornerToCentral(s1, e1, e2, s4);
+        linkCornerToCentral(s1, e1, e2, s4);
+        linkCornerToCentral(s2, f1, f2, s4);
+        linkCentralToCorner(s4, e3, e4, s3);
+        linkCentralToCorner(s4, f3, f4, s5);
 
+        s4.setShortestPathNode(f3);
+        s4.setSecondShortestPathNode(e3);
+
+        linkEnd(s0, s5, endNode);
 
         s3.setStandNext(d1); //S3의 경우는 코너에 위치해도 무조건 직진
         s0.setStandNext(a1); //s0의 경우는 무조건 a1으로 진행
@@ -91,22 +96,5 @@ public class SquareBoardCreator extends AbstractBoardCreator {
                 s4, s5, endNode
         );
         return createBoard(nodes);
-    }
-
-    private void linkCentral(
-            CornerNode start,
-            NormalNode node1,
-            NormalNode node2,
-            SquareCentralNode central,
-            NormalNode node3,
-            NormalNode node4,
-            CornerNode end
-    ) {
-        start.setStandNext(node1);
-        node1.setNext(node2);
-        node2.setNext(central);
-        central.addNext(node3);
-        node3.setNext(node4);
-        node4.setNext(end);
     }
 }

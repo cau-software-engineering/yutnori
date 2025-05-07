@@ -8,6 +8,7 @@ import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
 import org.core.domain.board.NormalNode;
+import org.core.domain.board.CentralNode;
 
 public abstract class AbstractBoardCreator {
 
@@ -35,6 +36,27 @@ public abstract class AbstractBoardCreator {
         Map<String, Node> map = nodes.stream()
                 .collect(Collectors.toMap(Node::getName, node -> node));
         return new Board(map);
+    }
+
+    protected void linkCornerToCentral(
+            CornerNode start,
+            NormalNode node1,
+            NormalNode node2,
+            CentralNode central
+    ) {
+        start.setStandNext(node1);
+        node1.setNext(node2);
+        node2.setNext(central);
+    }
+
+    protected void linkCentralToCorner(
+            CentralNode central,
+            NormalNode node1,
+            NormalNode node2,
+            CornerNode corner
+    ) {
+        node1.setNext(node2);
+        node2.setNext(corner);
     }
 
     public abstract Board initialize();

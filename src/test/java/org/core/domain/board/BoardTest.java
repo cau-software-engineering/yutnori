@@ -194,14 +194,14 @@ class BoardTest {
         C3                                     A2
          |       E3              F3            |
         C4                                     A1
-         |  $                           $      |
+         |  E4                           $      |
         S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
                                           |
                                           END
          */
-        @DisplayName("S4 -> E4, F4 : 중앙에서 시작하는 경우 2개의 루트를 반환한다")
+        @DisplayName("S4 -> E4, F4 : 중앙에서 시작하는 경우 가장 빠른 루트를 선택한다")
         @Test
-        void return_two_node_when_start_from_central() {
+        void return_shortest_node_when_start_from_central() {
             SquareBoardCreator creator = new SquareBoardCreator();
             Board board = creator.initialize();
 
@@ -211,8 +211,42 @@ class BoardTest {
                     .toList();
 
             assertAll(
-                    () -> assertThat(nextNodeNames).hasSize(2),
-                    () -> assertThat(nextNodeNames).containsExactly("E4", "F4")
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly("F4")
+            );
+        }
+
+        /*
+        * : 출발지
+        $ : 도착지
+        S2  -  *  -  B3  -  B2  -  B1  -       S1
+         |  F1                         E1      |
+        C1                                     A4
+         |       F2               *            |
+        C2                                     A3
+         |               S4                    |
+        C3                                     A2
+         |       E3              F3            |
+        C4                                     A1
+         |  $                           F4      |
+        S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                          |
+                                          END
+         */
+        @DisplayName("E2 -> E4 : 중앙에서 시작하는 경우 가장 두 번째로 루트를 선택한다")
+        @Test
+        void return_second_shortest_node_when_start_from_central() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            List<String> nextNodeNames = board.next("E2", YutResult.GUL)
+                    .stream()
+                    .map(Node::getName)
+                    .toList();
+
+            assertAll(
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly("E4")
             );
         }
 
