@@ -22,7 +22,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
      |                S4                 |
     C3                                   A2
      |       E3               F3         |
-    C4                                   A1
+    C4                                   A1 - start
      |  E4                         F4    |
     S3  -  D1  -  D2  -  D3  -  D4  - S5 S0
                                        |
@@ -88,6 +88,10 @@ public class SquareBoardCreator extends AbstractBoardCreator {
         s3.setStandNext(d1); //S3의 경우는 코너에 위치해도 무조건 직진
         s0.setStandNext(a1); //s0의 경우는 무조건 a1으로 진행
 
+        //시작 노드 설정
+        NormalNode start = new NormalNode("start");
+        start.setNext(a1);
+
         List<Node> nodes = List.of(
                 a1, a2, a3, a4,
                 b1, b2, b3, b4,
@@ -96,7 +100,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
                 e1, e2, e3, e4,
                 f1, f2, f3, f4,
                 s0, s1, s2, s3,
-                s4, s5, endNode
+                s4, s5, endNode, start
         );
         return createBoard(nodes, BOARD_TYPE);
     }

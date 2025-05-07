@@ -11,7 +11,7 @@ public class GamePieceInitializer {
             for (int j = 1; j <= pieceCount; j++) {
                 List<GamePiece> pieces = new ArrayList<>();
                 pieces.add(new GamePiece(j));
-                gamePieces.add(new GamePieces(i, null, pieces));
+                gamePieces.add(new GamePieces(i, "start", pieces));
             }
         }
         return gamePieces;

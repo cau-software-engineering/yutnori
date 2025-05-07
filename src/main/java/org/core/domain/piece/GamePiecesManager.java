@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GamePiecesManager {
 
-    private static final String GAME_START_PLACE_NAME = "S0";
+    private static final String GAME_START_PLACE_NAME = "start";
     private static final String GAME_END_PLACE_NAME = "end";
 
     private final Map<String, List<GamePieces>> gamePieces;

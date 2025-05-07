@@ -32,7 +32,7 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
             |             /                \                |
              D3                                           A2
               |       I2                       J2        |
-               D4                                       A1
+               D4                                       A1 - start
                 |  /                               \   |
                  S4  -  E1  -  E2  -  E3  -  E4  - S5 S0
                                                 |
@@ -111,6 +111,9 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
         linkCentralToCorner(s6, j1, j2, s5);
 
         linkEnd(s0, s5, endNode);
+
+        NormalNode startNode = new NormalNode("start");
+        startNode.setNext(a1);
 
         List<Node> nodes = List.of(
                 a1, a2, a3, a4,

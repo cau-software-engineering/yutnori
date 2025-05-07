@@ -13,7 +13,6 @@ public class GamePieces {
     private final List<GamePiece> pieces;
     private String place;
     private String beforePlace;
-    private boolean isStart;
 
     public GamePieces(int team, String place, List<GamePiece> pieces) {
         validateTeamNumber(team);
@@ -22,7 +21,6 @@ public class GamePieces {
         this.id = UUID.randomUUID().toString();
         this.team = team;
         this.pieces = pieces;
-        this.isStart = false;
     }
 
     private void validateTeamNumber(int teamNumber) {
@@ -32,7 +30,6 @@ public class GamePieces {
     }
 
     public void moveTo(String place) {
-        this.isStart = true;
         this.beforePlace = this.place;
         this.place = place;
     }
@@ -68,8 +65,6 @@ public class GamePieces {
     public int getTeam() {
         return team;
     }
-
-    public boolean isStart() {return isStart;}
 
     public String getId() {
         return id;

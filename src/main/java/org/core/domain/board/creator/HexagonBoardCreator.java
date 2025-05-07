@@ -32,7 +32,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
          |                                              |
           E3        H4                     I4          A2
            |                                          |
-            E4                                       A1
+            E4                                       A1 - start
              |                                      |
               S5  -  F1  -  F2  -  F3  -  F4  - S7 S0
                                                  |
@@ -121,6 +121,9 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
 
         linkEnd(s0, s7, endNode);
 
+        NormalNode startNode = new NormalNode("start");
+        startNode.setNext(a1);
+
         List<Node> nodes = List.of(
                 a1, a2, a3, a4,
                 b1, b2, b3, b4,
@@ -133,7 +136,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
                 i1, i2, i3, i4,
                 s0, s1, s2, s3,
                 s4, s5, s6, s7,
-                endNode
+                endNode, startNode
         );
         return createBoard(nodes, BOARD_TYPE);
     }
