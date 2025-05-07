@@ -4,9 +4,8 @@ import org.core.domain.board.BoardType;
 
 public interface ViewInformation {
 
-    int getX();
-
-    int getY();
+    int getX(int margin, int size);
+    int getY(int margin, int size);
 
     String getNodeName();
 
