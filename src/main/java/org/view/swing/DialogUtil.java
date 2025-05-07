@@ -20,7 +20,7 @@ public final class DialogUtil {
         int teamCnt  = Integer.parseInt(
                 JOptionPane.showInputDialog(parent, "몇 명의 팀으로 진행할까요? (2~4)"));
         int pieceCnt = Integer.parseInt(
-                JOptionPane.showInputDialog(parent, "몇 개의 말로 진행할까요? (1~5)"));
+                JOptionPane.showInputDialog(parent, "몇 개의 말로 진행할까요? (2~5)"));
         int type     = Integer.parseInt(
                 JOptionPane.showInputDialog(parent, "어떤 보드로 진행할까요? (4,5,6)"));
         return new GameInitializeDto(teamCnt, pieceCnt, BoardType.mapTo(type));
