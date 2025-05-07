@@ -38,6 +38,11 @@ public class Board {
 
     public Node findBeforeNode(String currentNode, String beforeNode) {
         System.out.println(currentNode + " " + beforeNode);
+
+        if(currentNode.equals("start")) {
+            return boards.get("start");
+        }
+
         if(currentNode.equals("S0")) {
             return boards.get("end");
         }
