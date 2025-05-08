@@ -34,9 +34,9 @@ public enum PentagonBoardViewInformation implements ViewInformation {
     S6("S6", 0.5000f, 0.5000f),
 
     // 꼭짓점
+    S0("S0", 0.7939f, 0.9045f),
     S1("S1", 0.9755f, 0.3455f),
     S2("S2", 0.5000f, 0.0000f),
-    S0("S0", 0.7939f, 0.9045f),
     S5("S5", 0.7939f, 0.9045f),
     S4("S4", 0.2061f, 0.9045f),
     S3("S3", 0.0245f, 0.3455f),
@@ -59,7 +59,7 @@ public enum PentagonBoardViewInformation implements ViewInformation {
     D3("D3", 0.1335f, 0.6809f),
     D4("D4", 0.1698f, 0.7927f),
 
-    // S4→S0
+    // S4→S5
     E1("E1", 0.3237f, 0.9045f),
     E2("E2", 0.4412f, 0.9045f),
     E3("E3", 0.5588f, 0.9045f),
@@ -80,14 +80,14 @@ public enum PentagonBoardViewInformation implements ViewInformation {
     H2("H2", 0.3415f, 0.4485f),
 
     // S1→S6
-    F2("F2", 0.6585f, 0.4485f),
     F1("F1", 0.8170f, 0.3970f),
+    F2("F2", 0.6585f, 0.4485f),
 
-    // S4→S6
+    // S6→S4
     I1("I1", 0.4020f, 0.6348f),
     I2("I2", 0.3041f, 0.7697f),
 
-    // S5→S6
+    // S6→S5
     J1("J1", 0.5980f, 0.6348f),
     J2("J2", 0.6959f, 0.7697f);
 

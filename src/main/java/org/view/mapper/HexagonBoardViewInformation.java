@@ -85,7 +85,8 @@ public enum HexagonBoardViewInformation implements ViewInformation {
     S3("S3", 0.5000f, 1.0000f),
     S4("S4", 0.0670f, 0.7500f),
     S5("S5", 0.0670f, 0.2500f),
-    S6("S6", 0.5000f, 0.5000f);
+    S6("S6", 0.5000f, 0.5000f),
+    S7("S7", 0.5000f, 0.0000f);
 
 
     private final String nodeName;
