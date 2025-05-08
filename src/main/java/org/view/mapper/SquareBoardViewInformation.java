@@ -28,6 +28,7 @@ public enum SquareBoardViewInformation implements ViewInformation {
     S3("S3", 0f, 1f),
     S0("S0", 1f, 1f),
 
+
     B4("B4", 1/5f, 0f),
     B3("B3", 2/5f, 0f),
     B2("B2", 3/5f, 0f),
@@ -59,7 +60,8 @@ public enum SquareBoardViewInformation implements ViewInformation {
     E3("E3", 2/6f, 4/6f),
     E4("E4", 1/6f, 5/6f),
 
-    S4("S4", 0.5f, 0.5f);
+    S4("S4", 0.5f, 0.5f),
+    S5("S5", 1f, 1f);
 
     private final String nodeName;
     private final float rx, ry;  // 보드 크기(size)에 대한 상대 위치 (0~1)
