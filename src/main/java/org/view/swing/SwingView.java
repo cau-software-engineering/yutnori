@@ -27,7 +27,7 @@ public class SwingView extends JFrame {
         // UI
         JSplitPane split = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                new BoardPanel(gameSM),
+                new BoardPanel(gameSM, turnSM, gameSM.context.teamCount),
                 new ControlPanel(gameSM, turnSM, this)
         );
         split.setResizeWeight(0);
