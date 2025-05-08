@@ -119,6 +119,40 @@ class BoardTest {
         /*
         * : 출발지
         $ : 도착지
+        *  -  B4  -  B3  -  B2  -  B1  -     S1
+         |  F1                         $     |
+        C1                                   A4
+         |       F2               E2         |
+        C2                                   A3
+         |                S4                 |
+        C3                                   A2
+         |       E3               F3         |
+        C4                                   A1
+         |  E4                         $    |
+        S3  -  D1  -  D2  -  D3  -  D4  - S5 S0
+                                          |
+                                          END
+         */
+        @DisplayName("S2 -> F4 : 코너에서 시작하는 경우, 같은 라인의 말을 반환한다")
+        @Test
+        void return_same_line_path_when_start_from_corner() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            List<String> nextNodeNames = board.next("S2", YutResult.MO)
+                    .stream()
+                    .map(Node::getName)
+                    .toList();
+
+            assertAll(
+                    () -> assertThat(nextNodeNames).hasSize(1),
+                    () -> assertThat(nextNodeNames).containsExactly("F4")
+            );
+        }
+
+        /*
+        * : 출발지
+        $ : 도착지
         S2  -  B4  -  B3  -  B2  -  B1  -    S1
          |  F1                         *     |
         C1                                   A4
