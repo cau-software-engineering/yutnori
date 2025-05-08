@@ -10,6 +10,8 @@ public interface Node {
 
     String getName();
 
+    List<Node> before();
+
     default boolean isEnd() {
         return false;
     }

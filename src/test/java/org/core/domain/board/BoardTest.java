@@ -3,6 +3,7 @@ package org.core.domain.board;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.core.domain.board.creator.HexagonBoardCreator;
 import org.core.domain.board.creator.PentagonBoardCreator;
@@ -347,6 +348,325 @@ class BoardTest {
                     () -> assertThat(nextNode).hasSize(1),
                     () -> assertThat(nextNode.get(0).isEnd()).isTrue()
             );
+        }
+
+        /*
+       * : 출발지
+       $ : 도착지
+       S2  -  *  -  B3  -  B2  -  B1  -       S1
+        |  F1                         E1      |
+       C1                                     A4
+        |       F2              E2            |
+       C2                                     A3
+        |                S4                   |
+       C3                                     A2
+        |       E3              *            |
+       C4                                     A1 - start
+        |  E4                          F4     |
+       S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                         |
+                                         $
+        */
+        @DisplayName("일반 노드의 경우, 바로 이전 노드를 반환한다")
+        @Test
+        void normal_node_return_before_node() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node1 = board.findBeforeNode("A4", "A1", List.of());
+            Node node2 = board.findBeforeNode("E3", "S4", List.of());
+            Node node3 = board.findBeforeNode("D1", "C3", List.of());
+
+
+            assertAll(
+                    () -> assertThat(node1.getName()).isEqualTo("A3"),
+                    () -> assertThat(node2.getName()).isEqualTo("S4"),
+                    () -> assertThat(node3.getName()).isEqualTo("S3")
+            );
+        }
+
+        /*
+       * : 출발지
+       $ : 도착지
+       S2  -  *  -  B3  -  B2  -  B1  -       S1
+        |  F1                         E1      |
+       C1                                     A4
+        |       F2              E2            |
+       C2                                     A3
+        |                S4                   |
+       C3                                     A2
+        |       E3              *            |
+       C4                                     A1 - start
+        |  E4                          F4     |
+       S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                         |
+                                         $
+        */
+        @DisplayName("S0 -> S5 노드의 경우, 마지막 노드를 반환한다")
+        @Test
+        void first_node_return_final_node() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S0", "A1", List.of("A1"));
+
+            assertThat(node.getName()).isEqualTo("S5");
+        }
+
+        /*
+      * : 출발지
+      $ : 도착지
+      S2  -  *  -  B3  -  B2  -  B1  -       S1
+       |  F1                         E1      |
+      C1                                     A4
+       |       F2              E2            |
+      C2                                     A3
+       |                S4                   |
+      C3                                     A2
+       |       E3              *            |
+      C4                                     A1 - start
+       |  E4                          F4     |
+      S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                        |
+                                        $
+       */
+        @DisplayName("S5 -> D4 마지막 노드의 경우, 연속 빽도가 나왔다면 테두리를 따라 돌아간다")
+        @Test
+        void return_round_before_when_final_node_has_continuous_back_do() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S5", "S0", List.of("A1", "S0"));
+
+            assertThat(node.getName()).isEqualTo("D4");
+        }
+
+        /*
+     * : 출발지
+     $ : 도착지
+     S2  -  *  -  B3  -  B2  -  B1  -       S1
+      |  F1                         E1      |
+     C1                                     A4
+      |       F2              E2            |
+     C2                                     A3
+      |                S4                   |
+     C3                                     A2
+      |       E3              *            |
+     C4                                     A1 - start
+      |  E4                          F4     |
+     S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                       |
+                                       $
+      */
+        @DisplayName("S5 -> D4 마지막 노드를 테두리를 통해 돌아왔다면 경로를 따라 돌아간다")
+        @Test
+        void return_round_before_when_final_node_has_round_path_history() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S5", "S3", List.of("A1", "S1", "E4", "S3"));
+
+            assertThat(node.getName()).isEqualTo("D4");
+        }
+
+        /*
+     * : 출발지
+     $ : 도착지
+     S2  -  *  -  B3  -  B2  -  B1  -       S1
+      |  F1                         E1      |
+     C1                                     A4
+      |       F2              E2            |
+     C2                                     A3
+      |                S4                   |
+     C3                                     A2
+      |       E3              *            |
+     C4                                     A1 - start
+      |  E4                          F4     |
+     S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                       |
+                                       $
+      */
+        @DisplayName("S5 -> F4 마지막 노드를 중앙 노드를 통해 돌아왔다면 경로를 따라 돌아간다")
+        @Test
+        void return_central_before_when_final_node_has_central_path_history() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S5", "S4", List.of("A1", "S1", "S4"));
+
+            assertThat(node.getName()).isEqualTo("F4");
+        }
+
+        /*
+    * : 출발지
+    $ : 도착지
+    S2  -  *  -  B3  -  B2  -  B1  -       S1
+     |  F1                         E1      |
+    C1                                     A4
+     |       F2              E2            |
+    C2                                     A3
+     |                S4                   |
+    C3                                     A2
+     |       E3              *            |
+    C4                                     A1 - start
+     |  E4                          F4     |
+    S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                      |
+                                      $
+     */
+        @DisplayName("S4 -> E2, F2 중앙노드는 경로를 따라 돌아간다")
+        @Test
+        void return_history_path_when_central_node_back_do() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node1 = board.findBeforeNode("S4", "S1", List.of("A1", "S1"));
+            Node node2 = board.findBeforeNode("S4", "S2", List.of("A1", "S1", "S2"));
+
+            assertAll(
+                    () -> assertThat(node1.getName()).isEqualTo("E2"),
+                    () -> assertThat(node2.getName()).isEqualTo("F2")
+            );
+        }
+
+        /*
+    * : 출발지
+    $ : 도착지
+    S2  -  *  -  B3  -  B2  -  B1  -       S1
+     |  F1                         E1      |
+    C1                                     A4
+     |       F2              E2            |
+    C2                                     A3
+     |                S4                   |
+    C3                                     A2
+     |       E3              *            |
+    C4                                     A1 - start
+     |  E4                          F4     |
+    S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                      |
+                                      $
+     */
+        @DisplayName("S4 -> E2 연속 백도가 나와도 history를 따라 돌아간다")
+        @Test
+        void return_history_path_when_ccontinuous_back_do() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S4", "E3", List.of("A1", "S1", "E4", "E3"));
+
+            assertThat(node.getName()).isEqualTo("E2");
+        }
+
+        /*
+   * : 출발지
+   $ : 도착지
+   S2  -  *  -  B3  -  B2  -  B1  -       S1
+    |  F1                         E1      |
+   C1                                     A4
+    |       F2              E2            |
+   C2                                     A3
+    |                S4                   |
+   C3                                     A2
+    |       E3              *            |
+   C4                                     A1 - start
+    |  E4                          F4     |
+   S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                     |
+                                     $
+    */
+        @DisplayName("S3 -> C4 연속 백도가 계속 나와서 history 추적이 불가한 경우, 테두리를 따라 이동한다")
+        @Test
+        void return_round_path_when_countinous_back_do() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S3", "D1", List.of("A1", "S0", "S5", "D4", "D3", "D2", "D1"));
+
+            assertThat(node.getName()).isEqualTo("C4");
+        }
+
+        /*
+  * : 출발지
+  $ : 도착지
+  S2  -  *  -  B3  -  B2  -  B1  -       S1
+   |  F1                         E1      |
+  C1                                     A4
+   |       F2              E2            |
+  C2                                     A3
+   |                S4                   |
+  C3                                     A2
+   |       E3              *            |
+  C4                                     A1 - start
+   |  E4                          F4     |
+  S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                    |
+                                    $
+   */
+        @DisplayName("S3 -> C4 코너 노드를 테두리를 따라 돌아왔다면 테두리 이전 노드를 반환한다")
+        @Test
+        void return_round_path_when_corner_node_has_round_path_history() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S3", "C1", List.of("A1", "B1", "C1"));
+
+            assertThat(node.getName()).isEqualTo("C4");
+        }
+
+        /*
+ * : 출발지
+ $ : 도착지
+ S2  -  *  -  B3  -  B2  -  B1  -       S1
+  |  F1                         E1      |
+ C1                                     A4
+  |       F2              E2            |
+ C2                                     A3
+  |                S4                   |
+ C3                                     A2
+  |       E3              *            |
+ C4                                     A1 - start
+  |  E4                          F4     |
+ S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                   |
+                                   $
+  */
+        @DisplayName("S3 -> E4 코너 노드를 중앙 노드를 따라 돌아왔다면 중앙노드 방면 이전 노드를 반환한다")
+        @Test
+        void return_round_path_when_central_node_has_central_path_history() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("S3", "E4", List.of("A1", "S1", "E4"));
+
+            assertThat(node.getName()).isEqualTo("E4");
+        }
+
+        /*
+      * : 출발지
+      $ : 도착지
+      S2  -  *  -  B3  -  B2  -  B1  -       S1
+       |  F1                         E1      |
+      C1                                     A4
+       |       F2              E2            |
+      C2                                     A3
+       |                S4                   |
+      C3                                     A2
+       |       E3              *            |
+      C4                                     A1 - start
+       |  E4                          F4     |
+      S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                        |
+                                        $
+       */
+        @DisplayName("시작 노드에서 빽도가 나오면 시작 노드를 반환한다")
+        @Test
+        void return_start_node_when_node_not_yet_started() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("start", "start", new ArrayList<>());
+
+            assertThat(node.getName()).isEqualTo("start");
         }
     }
 

@@ -1,5 +1,6 @@
 package org.core.domain.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CentralNode implements Node {
@@ -8,6 +9,7 @@ public class CentralNode implements Node {
     private final String name;
     private Node shortestPathNode;
     private Node secondShortestPathNode;
+    private List<Node> before = new ArrayList<>();
 
     public CentralNode(
             List<String> allNodeNames,
@@ -23,6 +25,15 @@ public class CentralNode implements Node {
             return List.of(shortestPathNode);
         }
         return List.of(secondShortestPathNode);
+    }
+
+    @Override
+    public List<Node> before() {
+        return before;
+    }
+
+    public void addBefore(Node node) {
+        before.add(node);
     }
 
     public void setSecondShortestPathNode(Node secondShortestPathNode) {
@@ -41,5 +52,14 @@ public class CentralNode implements Node {
     @Override
     public String getName() {
         return name;
+    }
+
+
+    public Node getShortestPathNode() {
+        return shortestPathNode;
+    }
+
+    public Node getSecondShortestPathNode() {
+        return secondShortestPathNode;
     }
 }
