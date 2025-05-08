@@ -43,7 +43,7 @@ public abstract class AbstractBoardCreator {
             CornerNode start,
             NormalNode node1,
             NormalNode node2,
-            CentralNode central
+            Node central
     ) {
         start.setStandNext(node1);
         node1.setNext(node2);
@@ -51,7 +51,7 @@ public abstract class AbstractBoardCreator {
     }
 
     protected void linkCentralToCorner(
-            CentralNode central,
+            Node central,
             NormalNode node1,
             NormalNode node2,
             CornerNode corner

@@ -7,7 +7,7 @@ import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
 import org.core.domain.board.NormalNode;
-import org.core.domain.board.CentralNode;
+import org.core.domain.board.SquareCentralNode;
 
 public class SquareBoardCreator extends AbstractBoardCreator {
 
@@ -37,7 +37,7 @@ public class SquareBoardCreator extends AbstractBoardCreator {
         CornerNode s5 = new CornerNode(List.of("S5"), "S5");
         EndNode endNode = new EndNode("end");
 
-        CentralNode s4 = new CentralNode(List.of("S4"), "S4");
+        SquareCentralNode s4 = new SquareCentralNode(List.of("S4"), "S4");
 
         NormalNode a1 = new NormalNode("A1");
         NormalNode a2 = new NormalNode("A2");
