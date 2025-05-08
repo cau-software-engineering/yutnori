@@ -25,7 +25,7 @@ public class BoardService {
     }
 
     public List<String> findMovablePlaces(String from, YutResult yutResult) {
-        if(yutResult == YutResult.BACK_DO){
+        if (yutResult == YutResult.BACK_DO) {
             GamePieces piece = gamePiecesManager.findByPlace(from);
             Node beforeNode = board.findBeforeNode(from, piece.getBeforePlace());
             return List.of(beforeNode.getName());
@@ -37,11 +37,35 @@ public class BoardService {
     }
 
     public List<GamePieces> findCatchablePieces(String place, int team) {
-        return gamePiecesManager.findCatchablePieces(place, team);
+        List<GamePieces> catchablePieces = gamePiecesManager.findCatchablePieces(place, team);
+
+        // 시작 노드라면 -> 마지막 노드를 잡을 수 있어야 함
+        if (place.equals(board.startNode())) {
+            catchablePieces.addAll(gamePiecesManager.findCatchablePieces(board.endNode(), team));
+        }
+
+        // 마지막 노드라면 -> 시작 노드를 잡을 수 있어야 함
+        if(place.equals(board.endNode())) {
+            catchablePieces.addAll(gamePiecesManager.findCatchablePieces(board.startNode(), team));
+        }
+
+        return catchablePieces;
     }
 
     public List<GamePieces> findGroupablePieces(String place, int team) {
-        return gamePiecesManager.findGroupablePieces(place, team);
+        List<GamePieces> groupablePieces = gamePiecesManager.findGroupablePieces(place, team);
+
+        // 시작 노드라면 -> 마지막 노드를 잡을 수 있어야 함
+        if (place.equals(board.startNode())) {
+            groupablePieces.addAll(gamePiecesManager.findGroupablePieces(board.endNode(), team));
+        }
+
+        // 마지막 노드라면 -> 시작 노드를 잡을 수 있어야 함
+        if(place.equals(board.endNode())) {
+            groupablePieces.addAll(gamePiecesManager.findGroupablePieces(board.startNode(), team));
+        }
+
+        return groupablePieces;
     }
 
     public GamePieces findPieces(String piecesId) {
@@ -53,7 +77,7 @@ public class BoardService {
     }
 
     public GamePieces groupPieces(String piecesId1, String piecesId2) {
-        return gamePiecesManager.groupPieces(piecesId1, piecesId2);
+        return gamePiecesManager.groupPieces(piecesId1, piecesId2, board.startNode());
     }
 
     public void moveTo(String pieceId, String place) {

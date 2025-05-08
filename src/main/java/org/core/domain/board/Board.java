@@ -9,9 +9,11 @@ import org.core.domain.yut.YutResult;
 public class Board {
 
     private final Map<String, Node> boards;
+    private final BoardType type;
 
-    public Board(Map<String, Node> boards) {
+    public Board(Map<String, Node> boards, BoardType type) {
         this.boards = boards;
+        this.type = type;
     }
 
     public List<Node> next(String startNodeName, YutResult result) {
@@ -36,8 +38,17 @@ public class Board {
 
     public Node findBeforeNode(String currentNode, String beforeNode) {
         System.out.println(currentNode + " " + beforeNode);
+
+        if(currentNode.equals("start")) {
+            return boards.get("start");
+        }
+
         if(currentNode.equals("S0")) {
             return boards.get("end");
+        }
+
+        if(currentNode.equals("A1")) {
+            return boards.get("S0");
         }
 
         Node startNode = boards.get(beforeNode);
@@ -56,5 +67,13 @@ public class Board {
             }
             nextNodes = tempNodes;
         }
+    }
+
+    public String startNode() {
+        return type.getStartNodeName();
+    }
+
+    public String endNode() {
+        return type.getFinalNodeName();
     }
 }

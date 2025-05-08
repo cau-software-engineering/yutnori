@@ -5,16 +5,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GamePiecesManager {
 
-    private static final String GAME_START_PLACE_NAME = "S0";
+    private static final String GAME_START_PLACE_NAME = "start";
     private static final String GAME_END_PLACE_NAME = "end";
 
     private final Map<String, List<GamePieces>> gamePieces;
 
     public GamePiecesManager(GamePieceInitializer initializer, int teamCount, int pieceCount) {
-        List<GamePieces> pieces = initializer.initialize(teamCount, pieceCount, GAME_START_PLACE_NAME);
+        List<GamePieces> pieces = initializer.initialize(teamCount, pieceCount);
         this.gamePieces = initializeGamePieces(pieces);
     }
 
@@ -36,14 +37,14 @@ public class GamePiecesManager {
         List<GamePieces> piecesOnPlace = gamePieces.getOrDefault(place, new ArrayList<>());
         return piecesOnPlace.stream()
                 .filter(pieces -> !pieces.isSameTeam(team))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public List<GamePieces> findGroupablePieces(String place, int team) {
         List<GamePieces> piecesOnPlace = gamePieces.getOrDefault(place, new ArrayList<>());
         return piecesOnPlace.stream()
                 .filter(pieces -> pieces.isSameTeam(team))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public void catchPiece(String pieceId) {
@@ -64,9 +65,24 @@ public class GamePiecesManager {
         startPointPieces.add(restartPieces);
     }
 
-    public GamePieces groupPieces(String movingPieceId, String groupingPieceId) {
+    public GamePieces groupPieces(String movingPieceId, String groupingPieceId, String startNodeName) {
         GamePieces movingPiece = findById(movingPieceId);
         GamePieces groupingPiece = findById(groupingPieceId);
+
+        //도착 노드의 말을 기준으로 업혀짐
+        if(startNodeName.equals(movingPiece.getPlace())) {
+            groupingPiece.groupWith(movingPiece);
+            gamePieces.get(movingPiece.getPlace())
+                    .remove(movingPiece);
+            return groupingPiece;
+        }
+
+        if(startNodeName.equals(groupingPiece.getPlace())) {
+            movingPiece.groupWith(groupingPiece);
+            gamePieces.get(groupingPiece.getPlace())
+                    .remove(groupingPiece);
+            return movingPiece;
+        }
 
         movingPiece.groupWith(groupingPiece);
         gamePieces.get(groupingPiece.getPlace())

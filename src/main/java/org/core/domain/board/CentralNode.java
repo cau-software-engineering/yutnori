@@ -2,14 +2,14 @@ package org.core.domain.board;
 
 import java.util.List;
 
-public class PolygonCentralNode implements Node {
+public class CentralNode implements Node {
 
     private final List<String> allNodeNames;
     private final String name;
     private Node shortestPathNode;
     private Node secondShortestPathNode;
 
-    public PolygonCentralNode(
+    public CentralNode(
             List<String> allNodeNames,
             String name
     ) {

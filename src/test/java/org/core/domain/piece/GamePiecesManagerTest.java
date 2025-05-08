@@ -14,7 +14,7 @@ import org.junit.jupiter.api.TestFactory;
 
 class GamePiecesManagerTest {
 
-    private static final String GAME_START_PLACE_NAME = "S0";
+    private static final String GAME_START_PLACE_NAME = "start";
 
     @DisplayName("내 팀의 모든 게임말을 찾는다")
     @Test
@@ -68,7 +68,7 @@ class GamePiecesManagerTest {
         String groupPieceId1 = oneTeamPieces.get(0).getId();
         String groupPieceId2 = oneTeamPieces.get(1).getId();
 
-        gamePiecesManager.groupPieces(groupPieceId1, groupPieceId2);
+        gamePiecesManager.groupPieces(groupPieceId1, groupPieceId2, "S0");
 
         List<GamePieces> afterGroupPiece = gamePiecesManager.findAllPiecesByTeam(1);
         assertThat(afterGroupPiece).hasSize(1);
@@ -125,7 +125,7 @@ class GamePiecesManagerTest {
                     gamePiecesManager.moveTo(oneTeamPiece2, "A3");
                 }),
                 dynamicTest("1팀의 첫번째 말과 두번째 말을 업는다", () -> {
-                    gamePiecesManager.groupPieces(oneTeamPiece1, oneTeamPiece2);
+                    gamePiecesManager.groupPieces(oneTeamPiece1, oneTeamPiece2, "S0");
                     List<GamePieces> afterGroupPiece = gamePiecesManager.findAllPiecesByTeam(1);
 
                     assertAll(

@@ -1,15 +1,17 @@
 package org.core.domain.board.creator;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.core.domain.board.Board;
+import org.core.domain.board.BoardType;
 import org.core.domain.board.CornerNode;
 import org.core.domain.board.EndNode;
 import org.core.domain.board.Node;
 import org.core.domain.board.NormalNode;
-import org.core.domain.board.PolygonCentralNode;
+import org.core.domain.board.CentralNode;
 
 public class HexagonBoardCreator extends AbstractBoardCreator {
+
+    private static final BoardType BOARD_TYPE = BoardType.HEXAGON;
 
        /*
               S3  -  C4  -  C3  -  C2  -  C1  -   S2
@@ -30,7 +32,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
          |                                              |
           E3        H4                     I4          A2
            |                                          |
-            E4                                       A1
+            E4                                       A1 - start
              |                                      |
               S5  -  F1  -  F2  -  F3  -  F4  - S7 S0
                                                  |
@@ -49,7 +51,7 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
         CornerNode s7 = new CornerNode(List.of(), "S7");
         EndNode endNode = new EndNode("end");
 
-        PolygonCentralNode s6 = new PolygonCentralNode(List.of(), "S6");
+        CentralNode s6 = new CentralNode(List.of(), "S6");
 
         NormalNode a1 = new NormalNode("A1");
         NormalNode a2 = new NormalNode("A2");
@@ -119,6 +121,9 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
 
         linkEnd(s0, s7, endNode);
 
+        NormalNode startNode = new NormalNode("start");
+        startNode.setNext(a1);
+
         List<Node> nodes = List.of(
                 a1, a2, a3, a4,
                 b1, b2, b3, b4,
@@ -131,29 +136,8 @@ public class HexagonBoardCreator extends AbstractBoardCreator {
                 i1, i2, i3, i4,
                 s0, s1, s2, s3,
                 s4, s5, s6, s7,
-                endNode
+                endNode, startNode
         );
-        return createBoard(nodes);
-    }
-
-    private void linkCornerToCentral(
-            CornerNode start,
-            NormalNode node1,
-            NormalNode node2,
-            PolygonCentralNode central
-    ) {
-        start.setStandNext(node1);
-        node1.setNext(node2);
-        node2.setNext(central);
-    }
-
-    private void linkCentralToCorner(
-            PolygonCentralNode central,
-            NormalNode node1,
-            NormalNode node2,
-            CornerNode corner
-    ) {
-        node1.setNext(node2);
-        node2.setNext(corner);
+        return createBoard(nodes, BOARD_TYPE);
     }
 }
