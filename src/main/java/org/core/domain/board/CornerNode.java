@@ -10,6 +10,8 @@ public class CornerNode implements Node {
     private final String name;
     private Node forwardNext;
     private Node standNext;
+    private Node centralBefore;
+    private Node roundBefore;
 
     public CornerNode(List<String> allNodeNames, String name) {
         this.name = name;
@@ -22,6 +24,10 @@ public class CornerNode implements Node {
             return List.of(standNext);
         }
         return List.of(forwardNext);
+    }
+
+    public List<Node> before() {
+        return List.of(centralBefore, roundBefore);
     }
 
     @Override
@@ -40,6 +46,14 @@ public class CornerNode implements Node {
 
     public void setStandNext(Node standNext) {
         this.standNext = standNext;
+    }
+
+    public void setCentralBefore(Node centralBefore) {
+        this.centralBefore = centralBefore;
+    }
+
+    public void setRoundBefore(Node roundBefore) {
+        this.roundBefore = roundBefore;
     }
 
     @Override
