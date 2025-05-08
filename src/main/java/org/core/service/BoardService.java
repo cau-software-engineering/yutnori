@@ -27,7 +27,7 @@ public class BoardService {
     public List<String> findMovablePlaces(String from, YutResult yutResult) {
         if (yutResult == YutResult.BACK_DO) {
             GamePieces piece = gamePiecesManager.findByPlace(from);
-            Node beforeNode = board.findBeforeNode(from, piece.getBeforePlace());
+            Node beforeNode = board.findBeforeNode(from, piece.getBeforePlace(), piece.getHistory());
             return List.of(beforeNode.getName());
         }
 

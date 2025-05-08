@@ -1,5 +1,6 @@
 package org.core.domain.piece;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ public class GamePieces {
     private final List<GamePiece> pieces;
     private String place;
     private String beforePlace;
+    private List<String> history = new ArrayList<>();
 
     public GamePieces(int team, String place, List<GamePiece> pieces) {
         validateTeamNumber(team);
@@ -30,6 +32,9 @@ public class GamePieces {
     }
 
     public void moveTo(String place) {
+        if(!this.place.equals("start")) {
+            history.add(place);
+        }
         this.beforePlace = this.place;
         this.place = place;
     }
@@ -60,6 +65,10 @@ public class GamePieces {
 
     public String getBeforePlace() {
         return beforePlace;
+    }
+
+    public List<String> getHistory() {
+        return history;
     }
 
     public int getTeam() {

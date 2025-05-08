@@ -27,7 +27,15 @@ public class CornerNode implements Node {
     }
 
     public List<Node> before() {
-        return List.of(centralBefore, roundBefore);
+        List<Node> result = new ArrayList<>();
+        if(centralBefore != null) {
+            result.add(centralBefore);
+        }
+
+        if(roundBefore != null) {
+            result.add(roundBefore);
+        }
+        return result;
     }
 
     @Override
@@ -42,6 +50,14 @@ public class CornerNode implements Node {
 
     public void setForwardNext(Node forwardNext) {
         this.forwardNext = forwardNext;
+    }
+
+    public Node getCentralBefore() {
+        return centralBefore;
+    }
+
+    public Node getRoundBefore() {
+        return roundBefore;
     }
 
     public void setStandNext(Node standNext) {
