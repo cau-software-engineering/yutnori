@@ -1,51 +1,61 @@
 package org.view.swing;
 
-import javax.swing.*;
-import java.awt.*;
-
-import org.core.dto.GameInitializeDto;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JFrame;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import org.core.state.game.GameStateMachine;
 import org.core.state.game.event.GameStartEvent;
 import org.core.state.turn.TurnStateMachine;
+import org.view.swing.board.BoardPanel;
+import org.view.swing.control.ControlPanel;
 
 public class SwingView extends JFrame {
 
-    private GameStateMachine gameSM;
-    private TurnStateMachine turnSM;
+  private GameStateMachine gameSM;
+  private TurnStateMachine turnSM;
 
-    public SwingView() {
-        init();
-    }
+  private Store store;
 
-    private void init() {
-        // Init
-        GameInitializeDto dto = DialogUtil.showInitDialog(this);
+  public SwingView() {
+    init();
+  }
 
-        gameSM = GameStateMachine.create(dto);
-        turnSM = TurnStateMachine.create(gameSM);
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(SwingView::new);
+  }
 
-        // UI
-        JSplitPane split = new JSplitPane(
-                JSplitPane.HORIZONTAL_SPLIT,
-                new BoardPanel(gameSM, turnSM, gameSM.context.teamCount),
-                new ControlPanel(gameSM, turnSM, this)
-        );
-        split.setResizeWeight(0);
-        split.setDividerLocation(600);
+  private void init() {
+    // Init
+    SetupPanel setupPanel = new SetupPanel();
 
-        setTitle("윷놀이 (Swing)");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1220, 640);
-        setLocationRelativeTo(null);
-        add(split, BorderLayout.CENTER);
+    setupPanel.startSetup().thenAccept(dto -> {
+      gameSM = GameStateMachine.create(dto);
+      turnSM = TurnStateMachine.create(gameSM);
+      store = new Store(dto.teamCount());
 
-        //Game start event
-        gameSM.dispatchEvent(new GameStartEvent());
+      // UI
+      JSplitPane split = new JSplitPane(
+          JSplitPane.HORIZONTAL_SPLIT,
+          new BoardPanel(gameSM, turnSM, store, gameSM.context.teamCount),
+          new ControlPanel(gameSM, turnSM, this)
+      );
+      split.setBackground(Color.WHITE);
+      split.setResizeWeight(0);
+      split.setDividerLocation(600);
 
-        setVisible(true);
-    }
+      setTitle("윷놀이 (Swing)");
+      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      setSize(1220, 640);
+      setLocationRelativeTo(null);
+      add(split, BorderLayout.CENTER);
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(SwingView::new);
-    }
+      //Game start event
+      gameSM.dispatchEvent(new GameStartEvent());
+
+      setVisible(true);
+    });
+
+  }
 }
