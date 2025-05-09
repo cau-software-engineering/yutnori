@@ -21,6 +21,10 @@ public class BoardService {
     this.board = BoardCreator.create(boardType);
   }
 
+  public Node getNode(String nodeName) {
+    return board.getNode(nodeName);
+  }
+
   public List<GamePieces> findAllPiecesByTeam(int team) {
     return gamePiecesManager.findAllPiecesByTeam(team);
   }
