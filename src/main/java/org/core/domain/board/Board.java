@@ -48,6 +48,10 @@ public class Board {
     //되돌아 갈 수 있는 길이 하나라면 -> 바로 반환
     Node cur = boards.get(currentNode);
     if (cur.before().size() == 1) {
+      Node before = cur.before().get(0);
+      if(before.getName().equals(type.getStartNodeName())) {
+        return boards.get(type.getFinalNodeName());
+      }
       return cur.before().get(0);
     }
 
