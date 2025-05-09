@@ -13,6 +13,7 @@ import org.core.state.turn.event.TurnRegenerateYutEvent;
 import org.core.state.turn.event.TurnStartActionEvent;
 import org.core.state.turn.event.TurnTakeMyPiecesEvent;
 import org.core.state.turn.event.TurnToIdleEvent;
+import org.core.state.turn.event.TurnToInvalidYutEvent;
 import org.core.state.turn.event.TurnYutGeneratedEvent;
 
 public abstract class TurnState extends State<TurnStateContext, TurnStateManager, TurnEvent> {
@@ -51,4 +52,6 @@ public abstract class TurnState extends State<TurnStateContext, TurnStateManager
   public void handleEvent(TurnToIdleEvent event) {
   }
 
+  public void handleEvent(TurnToInvalidYutEvent event) {
+  }
 }

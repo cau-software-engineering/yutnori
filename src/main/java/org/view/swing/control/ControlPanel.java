@@ -3,6 +3,7 @@ package org.view.swing.control;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -13,7 +14,9 @@ import org.core.state.game.GameStateMachine;
 import org.core.state.game.event.GameOverEvent;
 import org.core.state.game.state.GameOverState;
 import org.core.state.turn.TurnStateMachine;
+import org.core.state.turn.event.TurnNextTurnEvent;
 import org.core.state.turn.state.TurnIdleState;
+import org.core.state.turn.state.TurnInvalidYutState;
 import org.core.state.turn.state.TurnRegeneratingState;
 import org.core.state.turn.state.TurnWaitForActionState;
 import org.view.swing.DialogUtil;
@@ -110,6 +113,23 @@ public class ControlPanel extends JPanel {
     } else if (st instanceof TurnWaitForActionState) {
       announcementPanel.announce("이동할 " +
           turnSM.context.turn.getTurn() + "팀 말을 선택해주세요", 0);
+    } else if (st instanceof TurnInvalidYutState) {
+      announcementPanel.announce("이동할 수 있는 말이 없어 무효 처리 되었습니다.", 1600);
+      yutThrowPanel.setEnabled(false);
+
+      new Timer().schedule(new TimerTask() {
+                             @Override
+                             public void run() {
+                               SwingUtilities.invokeLater(() -> {
+                                 yutThrowPanel.setEnabled(true);
+                                 turnSM.dispatchEvent(new TurnNextTurnEvent());
+                               });
+                             }
+                           }
+          , 2000);
+
+    } else {
+      // do nothing
     }
   }
 }

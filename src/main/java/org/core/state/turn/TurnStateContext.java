@@ -45,6 +45,10 @@ public class TurnStateContext {
     this.yutResults.remove(yutResult);
   }
 
+  public void clearYutResults() {
+    this.yutResults.clear();
+  }
+
   public YutResult lastYutResult() {
     return yutResults.get(yutResults.size() - 1);
   }
