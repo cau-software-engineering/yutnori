@@ -98,6 +98,8 @@ public class ControlPanel extends JPanel {
 
     if (st instanceof TurnIdleState) {
       if (gameSM.isGameOver()) {
+        announcementPanel.announce(
+            turnSM.context.getScoreBoard().getWinner() + "팀이 승리하였습니다!", 0);
         gameSM.dispatchEvent(new GameOverEvent());
         return;
       }

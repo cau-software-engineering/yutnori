@@ -147,6 +147,23 @@ public class MoveControl extends JPanel {
       List<String> movablePlaces = bs.findMovablePlaces(gamePieces.getPlace(), yutResult);
 
       for (String place : movablePlaces) {
+        if (bs.getNode(place).isEnd()) {
+          RoundButton endButton = new RoundButton();
+
+          endButton.setBounds(20, 20, 40, 40);
+          endButton.setBackground(Color.DARK_GRAY);
+          endButton.setForeground(Color.WHITE);
+          endButton.setText("끝");
+
+          endButton.addActionListener(e1 -> turnSM.dispatchEvent(
+              new TurnMovePieceEvent(gamePieces.getId(), place, yutResult)));
+
+          movablePlaceButtons.add(endButton);
+          this.add(endButton);
+
+          continue;
+        }
+
         RoundButton moveButton = new RoundButton();
         Point movePoint = store.getNodePos(place);
         boolean isOverlapping = allPlacedPieces.stream().map(pieces -> pieces.getPlace())
