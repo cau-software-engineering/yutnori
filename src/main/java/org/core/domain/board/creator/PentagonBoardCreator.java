@@ -94,14 +94,8 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
         linkOneSide(s0, a1, a2, a3, a4, s1);
         linkOneSide(s1, b1, b2, b3, b4, s2);
         linkOneSide(s2, c1, c2, c3, c4, s3);
-        linkOneSide(s2, c1, c2, c3, c4, s3);
         linkOneSide(s3, d1, d2, d3, d4, s4);
         linkOneSide(s4, e1, e2, e3, e4, s5);
-
-        s4.setStandNext(e1); //s4에 위치하면 직진이 더 거리가 짧기 때문에
-        s0.setStandNext(a1); //s0의 경우는 무조건 a1으로 진행
-        s6.setShortestPathNode(j1);
-        s6.setSecondShortestPathNode(i1);
 
         linkCornerToCentral(s1, f1, f2, s6);
         linkCornerToCentral(s2, g1, g2, s6);
@@ -115,6 +109,11 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
         NormalNode startNode = new NormalNode("start");
         startNode.setNext(a1);
 
+        s4.setStandNext(e1); //s4에 위치하면 직진이 더 거리가 짧기 때문에
+        s0.setStandNext(a1); //s0의 경우는 무조건 a1으로 진행
+        s6.setShortestPathNode(j1);
+        s6.setSecondShortestPathNode(i1);
+
         List<Node> nodes = List.of(
                 a1, a2, a3, a4,
                 b1, b2, b3, b4,
@@ -126,7 +125,7 @@ public class PentagonBoardCreator extends AbstractBoardCreator {
                 j1, j2,
                 s0, s1, s2, s3,
                 s4, s5, s6,
-                endNode
+                endNode, startNode
         );
 
         return createBoard(nodes, BOARD_TYPE);
