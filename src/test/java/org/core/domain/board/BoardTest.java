@@ -458,6 +458,34 @@ class BoardTest {
                                        |
                                        $
       */
+        @DisplayName("A1 -> S5 빽도의 경우, 마지막 노드로 이동한다")
+        @Test
+        void return_final_node_when_start_node_is_back_do() {
+            SquareBoardCreator creator = new SquareBoardCreator();
+            Board board = creator.initialize();
+
+            Node node = board.findBeforeNode("A1", "start", List.of("start"));
+
+            assertThat(node.getName()).isEqualTo("S5");
+        }
+
+        /*
+     * : 출발지
+     $ : 도착지
+     S2  -  *  -  B3  -  B2  -  B1  -       S1
+      |  F1                         E1      |
+     C1                                     A4
+      |       F2              E2            |
+     C2                                     A3
+      |                S4                   |
+     C3                                     A2
+      |       E3              *            |
+     C4                                     A1 - start
+      |  E4                          F4     |
+     S3  -  D1  -  D2  -  D3  -  D4  - S5   S0
+                                       |
+                                       $
+      */
         @DisplayName("S5 -> D4 마지막 노드를 테두리를 통해 돌아왔다면 경로를 따라 돌아간다")
         @Test
         void return_round_before_when_final_node_has_round_path_history() {
