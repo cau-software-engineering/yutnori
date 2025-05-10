@@ -70,6 +70,13 @@ public class YutThrowPanel extends JPanel {
 
     String input = JOptionPane.showInputDialog(
         this, "어떤 윷을 던지시겠습니까? (빽도/도/개/걸/윷/모)");
+
+    if (input == null || input.isEmpty() || !YutResult.isYutText(input)) {
+      fixedThrowButton.setEnabled(true);
+      randomThrowButton.setEnabled(true);
+      return;
+    }
+
     YutResult res = YutResult.from(input);
 
     YutGenerationRequest req = new YutGenerationRequest(YutGenerateOptions.DESIGNATED, res);
