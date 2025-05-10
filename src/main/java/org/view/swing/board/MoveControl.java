@@ -164,20 +164,24 @@ public class MoveControl extends JPanel {
           continue;
         }
 
-        RoundButton moveButton = new RoundButton();
-        Point movePoint = store.getNodePos(place);
-        boolean isOverlapping = allPlacedPieces.stream().map(pieces -> pieces.getPlace())
-            .anyMatch(i -> i == place);
-        int margin = isOverlapping ? 40 : 0;
+        try {
+          RoundButton moveButton = new RoundButton();
+          Point movePoint = store.getNodePos(place);
+          boolean isOverlapping = allPlacedPieces.stream().map(pieces -> pieces.getPlace())
+              .anyMatch(i -> i == place);
+          int margin = isOverlapping ? 40 : 0;
 
-        moveButton.setBounds(movePoint.x - 10 + margin, movePoint.y - 10, 20, 20);
-        moveButton.setBackground(store.getPalette(gamePieces.getTeam()));
-        moveButton.setOpacity(0.8f);
-        moveButton.addActionListener(e1 -> turnSM.dispatchEvent(
-            new TurnMovePieceEvent(gamePieces.getId(), place, yutResult)));
+          moveButton.setBounds(movePoint.x - 10 + margin, movePoint.y - 10, 20, 20);
+          moveButton.setBackground(store.getPalette(gamePieces.getTeam()));
+          moveButton.setOpacity(0.8f);
+          moveButton.addActionListener(e1 -> turnSM.dispatchEvent(
+              new TurnMovePieceEvent(gamePieces.getId(), place, yutResult)));
 
-        movablePlaceButtons.add(moveButton);
-        this.add(moveButton);
+          movablePlaceButtons.add(moveButton);
+          this.add(moveButton);
+        } catch (NullPointerException e) {
+          System.out.println("이동할 수 없는 곳입니다.");
+        }
       }
     }
 
