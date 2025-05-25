@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 /**
- * JFX BoardPanel
+ * BoardPanel (JavaFX)
  */
 public class BoardPanel extends Pane {
     private final double size;
