@@ -22,9 +22,9 @@ public class SwingView extends JFrame {
     init();
   }
 
-  //public static void main(String[] args) {
-  //  SwingUtilities.invokeLater(SwingView::new);
-  //}
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(SwingView::new);
+  }
 
   private void init() {
     // Init

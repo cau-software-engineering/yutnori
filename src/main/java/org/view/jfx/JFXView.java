@@ -2,21 +2,23 @@ package org.view.jfx;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage; // 코어 로직 예시
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import org.view.jfx.board.BoardPanel;
 
 public class JFXView extends Application {
 
     @Override
     public void start(Stage stage) {
-
-
-        stage.setScene(new Scene(new Label("Yutnori JFX UI 가동!"), 400, 200));
-        stage.setTitle("Yutnori - JavaFX");
+        BoardPanel board = new BoardPanel(600, 30);
+        StackPane root = new StackPane(board);
+        Scene scene = new Scene(root);
+        stage.setTitle("윷놀이 (JavaFX)");
+        stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch(args);              // IDE에서 직접 실행할 때도 가능
+        launch(args);
     }
 }
