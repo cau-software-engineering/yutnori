@@ -4,63 +4,94 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import org.core.domain.board.BoardType;
+import org.core.dto.NodeViewDto;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
- * BoardDrawing (JavaFX)
+ * Swing BoardDrawing → JavaFX.
+ *   · views : BoardViewMapper 가 계산한 노드 좌표
+ *   · type  : SQUARE / PENTAGON / HEXAGON 에 따라 선 패턴 결정
  */
-public class BoardDrawing extends Pane {
-    private final double size;
-    private final double margin;
-    private final double cell;
+public final class BoardDrawing extends Pane {
 
-    public BoardDrawing(double size, double margin) {
-        this.size = size;
+    private static final int NORMAL_R = 15;
+    private static final int CORNER_R = 30;
+
+    private final BoardType type;
+    private final List<NodeViewDto> views;
+    private final int margin;
+    private final int size;
+
+    public BoardDrawing(BoardType type,
+                        List<NodeViewDto> views,
+                        int margin,
+                        int size) {
+        this.type   = type;
+        this.views  = views;
         this.margin = margin;
-        this.cell = size / 4.0; // 5×5 그리드 간격
-        setPickOnBounds(false); // 이벤트 전파를 위해 투명하게 패스
-        drawLines();
-        drawNodes();
+        this.size   = size;
+
+        setPickOnBounds(false);
+        drawBoard();
     }
 
-    private void drawLines() {
-        double left = margin;
-        double right = margin + size;
-        double top = margin;
-        double bottom = margin + size;
-        double center = margin + size / 2.0;
+    /* ─────────────────────────────────────────────────────────── */
 
-        // 외곽선은 BoardPanel이 그리므로 생략하고 내부 선만
-        // 중앙 십자(—, |)
-        getChildren().add(new Line(left, center, right, center));
-        getChildren().add(new Line(center, top, center, bottom));
+    private void drawBoard() {
+        // 1) 노드(점)부터
+        for (NodeViewDto v : views) {
+            int r = v.name().startsWith("S") ? CORNER_R : NORMAL_R;
+            Circle c = new Circle(v.x(), v.y(), r, Color.WHITE);
+            c.setStroke(Color.BLACK);
+            getChildren().add(c);
+        }
 
-        // 중심 ↔ 네 모서리
-        getChildren().add(new Line(left, top, right, bottom));
-        getChildren().add(new Line(right, top, left, bottom));
-
-        // 네 변의 중점 ↔ 중심
-        getChildren().add(new Line(center, top, center, center));
-        getChildren().add(new Line(center, bottom, center, center));
-        getChildren().add(new Line(left, center, center, center));
-        getChildren().add(new Line(right, center, center, center));
+        // 2) 보드 외곽/대각선/중앙선
+        switch (type) {
+            case SQUARE   -> drawSquare();
+            case PENTAGON -> drawNGon(5);
+            case HEXAGON  -> drawNGon(6);
+        }
     }
 
-    private void drawNodes() {
-        double r = 6; // node radius
-        // 5×5 격자 노드 중 실제 윷놀이 핵심 노드만 표시 (간단 버전)
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                boolean isEdge = (i == 0 || i == 4 || j == 0 || j == 4);
-                boolean isCenter = (i == 2 && j == 2);
-                boolean isCross = (i == 2 || j == 2) || (i == j) || (i + j == 4);
-                if (isCenter || (isEdge && isCross)) {
-                    double cx = margin + i * cell;
-                    double cy = margin + j * cell;
-                    Circle node = new Circle(cx, cy, r, Color.WHITE);
-                    node.setStroke(Color.BLACK);
-                    getChildren().add(node);
-                }
-            }
+    private void drawSquare() {
+        double x = margin, y = margin, w = size;
+        // 외곽 + 대각선
+        getChildren().addAll(
+                new Line(x, y, x + w, y),                     // 상
+                new Line(x + w, y, x + w, y + w),             // 우
+                new Line(x + w, y + w, x, y + w),             // 하
+                new Line(x, y + w, x, y),                     // 좌
+                new Line(x, y, x + w, y + w),                 // 대각
+                new Line(x + w, y, x, y + w)                  // 대각
+        );
+    }
+
+    private void drawNGon(int sides) {
+        /* Swing 로직 그대로: S1-S2-… 모서리 ↔ S6(센터) 연결 */
+        NodeViewDto center = views.stream()
+                .filter(v -> v.name().equals("S6"))
+                .findFirst()
+                .orElseThrow();
+
+        List<NodeViewDto> sNodes =
+                views.stream()
+                        .filter(v -> v.name().startsWith("S"))
+                        .sorted(Comparator.comparingInt(
+                                v -> Integer.parseInt(v.name().substring(1))))
+                        .toList();
+
+        for (int i = 0; i < sides; i++) {
+            NodeViewDto cur  = sNodes.get(i);
+            NodeViewDto next = sNodes.get((i + 1) % sides);
+
+            // 외곽
+            getChildren().add(new Line(cur.x(), cur.y(), next.x(), next.y()));
+            // 중심 ↔ 모서리
+            getChildren().add(new Line(center.x(), center.y(), cur.x(), cur.y()));
         }
     }
 }
