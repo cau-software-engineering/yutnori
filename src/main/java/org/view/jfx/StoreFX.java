@@ -15,13 +15,12 @@ public final class StoreFX {
     private Map<String, Point2D> nodePos;      // ← 항상 null 아님
     private final Color[] palette;
 
-    /* 노드 리스트를 함께 받는 생성자 */
     public StoreFX(int teamCount) {
         this.teamCount = teamCount;
         this.palette   = buildPalette(teamCount);         // ← 여기서 nodePos 초기화
     }
 
-    // 팀 수에 맞춰 팔레트 생성 (HSB 색상환 균등 분배)
+    // 팀 수에 맞춰 팔레트 생성
     private static Color[] buildPalette(int n) {
         Color[] arr = new Color[n];
         double step = 1.0 / n;
@@ -30,7 +29,6 @@ public final class StoreFX {
         }
         return arr;
     }
-    /* 노드 좌표 주입용 메서드 */
     public void setNodePos(List<NodeViewDto> nodes) {
         this.nodePos = nodes == null
                 ? Collections.emptyMap()
@@ -45,7 +43,7 @@ public final class StoreFX {
         return nodePos.get(id);
     }
 
-    public Color getPalette(int team) { return palette[team]; }
+    public Color getPalette(int team) { return palette[team - 1]; }
 
     public int getTeamCount() {
         return teamCount;
