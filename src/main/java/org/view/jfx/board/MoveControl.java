@@ -18,46 +18,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JavaFX version of {@code org.view.swing.board.MoveControl}.
- * <p>
- * ● 선택 버튼 (말 위치 ‐ 링 형태)<br>
- * ● 미출발 말 번호 버튼 (원형, 하단)<br>
- * ● 이동 가능 노드 버튼 (작은 원형)<br>
- * </p>
- * 스테이트 머신이 {@link TurnWaitForActionState} 가 되면 말 선택지를 표시하고,
- * 이동 이벤트가 발생하면 버튼들이 사라집니다.
+ * MoveControl (JavaFX)
  */
 public final class MoveControl extends Pane {
 
-    // ──────────────────────────────────────────────────────────────────────────
-    // Constants
-    // ──────────────────────────────────────────────────────────────────────────
 
     private static final double PIECE_BTN_D      = 40;  // 말 선택 링 버튼 지름
     private static final double UNSTART_BTN_D    = 50;  // 미출발 말 번호 버튼 지름
     private static final double DEST_BTN_D       = 20;  // 목적지 버튼 지름
     private static final double END_BTN_D        = 40;  // "끝" 버튼 지름
 
-    // ──────────────────────────────────────────────────────────────────────────
-    // Dependencies
-    // ──────────────────────────────────────────────────────────────────────────
-
     private final GameStateMachine gameSM;
     private final TurnStateMachine turnSM;
     private final StoreFX          store;
-
-    // ──────────────────────────────────────────────────────────────────────────
-    // Internal state
-    // ──────────────────────────────────────────────────────────────────────────
 
     private GamePieces                 selectedPiece;
     private final List<Button>         placedPieceButtons   = new ArrayList<>();
     private final List<Button>         unstartedPieceButtons= new ArrayList<>();
     private final List<Button>         movablePlaceButtons  = new ArrayList<>();
 
-    // ──────────────────────────────────────────────────────────────────────────
-    // Construction
-    // ──────────────────────────────────────────────────────────────────────────
 
     public MoveControl(GameStateMachine gameSM,
                        TurnStateMachine turnSM,
@@ -67,11 +46,8 @@ public final class MoveControl extends Pane {
         this.turnSM = turnSM;
         this.store  = store;
 
-        // BoardPanel 위에 투명 레이어로 동작해야 하므로 패널 자체는 클릭 비활성화
         setPickOnBounds(false);
-        // NOTE: 부모 Pane 은 빈 영역(배경 부분)만 클릭을 무시하고,
-        // 자식 버튼들은 정상적으로 이벤트를 받아야 하므로 mouseTransparent 는 false 로 둡니다.
-        // 마우스 투과를 원할 경우 자식 노드에 개별 설정을 하세요.
+
         setMouseTransparent(false);
 
         // TurnStateMachine 변화 감지 → 말 선택 표시 / 초기화
@@ -84,21 +60,20 @@ public final class MoveControl extends Pane {
         });
     }
 
-    // ──────────────────────────────────────────────────────────────────────────
-    // Main UI flow
-    // ──────────────────────────────────────────────────────────────────────────
-
     private void showActions() {
         clearAllButtons();
 
         int turn = turnSM.context.turn.getTurn();
-        List<GamePieces> list = gameSM.context.boardService.findAllPiecesByTeam(turn);
+        List<GamePieces> list = gameSM.context.boardService
+                .findAllPiecesByTeam(turn)               // 전체 수집
+                .stream()
+                .filter(p -> p.getTeam() == turn)
+                .toList();
 
         for (int idx = 0; idx < list.size(); idx++) {
             GamePieces piece = list.get(idx);
             Button btn;
             if (!"start".equals(piece.getPlace())) {
-                // ─ placed pieces -------------------------------------------------
                 btn = createPlacedPieceButton(piece);
                 placedPieceButtons.add(btn);
             } else {
@@ -124,7 +99,7 @@ public final class MoveControl extends Pane {
             List<String> places = bs.findMovablePlaces(piece.getPlace(), yutResult);
             for (String place : places) {
                 if (bs.getNode(place).isEnd()) {
-                    // "끝" 버튼 — 좌상단 고정
+                    // "끝" 버튼  좌상단
                     Button endBtn = createEndButton();
                     endBtn.setOnAction(e -> onMove(piece, place, yutResult));
                     endBtn.setLayoutX(20);
@@ -147,9 +122,6 @@ public final class MoveControl extends Pane {
         }
     }
 
-    // ──────────────────────────────────────────────────────────────────────────
-    // Event helpers
-    // ──────────────────────────────────────────────────────────────────────────
 
     private void onMove(GamePieces piece, String destNode, YutResult yutResult) {
         clearAllButtons();
@@ -158,9 +130,6 @@ public final class MoveControl extends Pane {
         );
     }
 
-    // ──────────────────────────────────────────────────────────────────────────
-    // Button factory
-    // ──────────────────────────────────────────────────────────────────────────
 
     private Button createPlacedPieceButton(GamePieces piece) {
         Point2D p = store.getNodePos(piece.getPlace());
@@ -215,10 +184,7 @@ public final class MoveControl extends Pane {
         return btn;
     }
 
-    // ──────────────────────────────────────────────────────────────────────────
     // Styling helpers
-    // ──────────────────────────────────────────────────────────────────────────
-
     private static String roundStyle(Color fill) {
         return "-fx-background-radius: 100; -fx-background-color: " + toHex(fill) + ";"
                 + "-fx-border-radius: 100; -fx-border-color: transparent;";
@@ -233,10 +199,7 @@ public final class MoveControl extends Pane {
         return String.format("#%02x%02x%02x", (int)(c.getRed()*255), (int)(c.getGreen()*255), (int)(c.getBlue()*255));
     }
 
-    // ──────────────────────────────────────────────────────────────────────────
     // Utility – highlight / clear helpers
-    // ──────────────────────────────────────────────────────────────────────────
-
     private void highlightPlacedButton(Button b) {
         placedPieceButtons.forEach(btn -> btn.setStyle(ringStyle(Color.web("#FFFFFF"))));
         b.setStyle(ringStyle(Color.LIMEGREEN));
@@ -255,10 +218,7 @@ public final class MoveControl extends Pane {
         unstartedPieceButtons.forEach(btn -> btn.setStyle(btn.getStyle().replace("-fx-border-color: lime;", "")));
     }
 
-    // ──────────────────────────────────────────────────────────────────────────
     // Cleanup helpers
-    // ──────────────────────────────────────────────────────────────────────────
-
     private void addMovableButton(Button b) {
         movablePlaceButtons.add(b);
         getChildren().add(b);

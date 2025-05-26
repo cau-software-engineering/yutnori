@@ -35,16 +35,16 @@ public final class SetupPanel extends VBox {
         setSpacing(20);
         setAlignment(Pos.TOP_CENTER);
 
-        // ─ 팀·말 수 카운터 ─
+        // 팀·말 수 카운터
         getChildren().add(createCounterBox("몇 명의 팀으로 진행할까요? (2-4)",
                 teamLabel, 2, 4, true));
         getChildren().add(createCounterBox("몇 개의 말로 진행할까요? (2-5)",
                 malLabel, 2, 5, false));
 
-        // ─ 보드 크기 선택 ─
+        // 보드 크기 선택
         getChildren().add(createBoardSelector());
 
-        // ─ 확정 버튼 ─
+        // 확정 버튼
         Button confirm = new Button("확정");
         confirm.setOnAction(e -> {
             promise.complete(new GameInitializeDto(
@@ -60,7 +60,6 @@ public final class SetupPanel extends VBox {
         return promise;
     }
 
-    /* ------------------- 내부 UI 빌더 ------------------- */
 
     private VBox createCounterBox(String title, Label valueLabel,
                                   int min, int max, boolean isTeam) {

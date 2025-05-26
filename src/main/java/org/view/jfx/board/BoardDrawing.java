@@ -11,9 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Swing BoardDrawing → JavaFX.
- *   · views : BoardViewMapper 가 계산한 노드 좌표
- *   · type  : SQUARE / PENTAGON / HEXAGON 에 따라 선 패턴 결정
+ * BoardDrawing (JavaFX)
  */
 public final class BoardDrawing extends Pane {
 
@@ -38,18 +36,14 @@ public final class BoardDrawing extends Pane {
         drawBoard();
     }
 
-    /* ─────────────────────────────────────────────────────────── */
 
     private void drawBoard() {
-        // 1) 노드(점)부터
         for (NodeViewDto v : views) {
             int r = v.name().startsWith("S") ? CORNER_R : NORMAL_R;
             Circle c = new Circle(v.x(), v.y(), r, Color.WHITE);
             c.setStroke(Color.BLACK);
             getChildren().add(c);
         }
-
-        // 2) 보드 외곽/대각선/중앙선
         switch (type) {
             case SQUARE   -> drawSquare();
             case PENTAGON -> drawNGon(5);
@@ -59,19 +53,18 @@ public final class BoardDrawing extends Pane {
 
     private void drawSquare() {
         double x = margin, y = margin, w = size;
-        // 외곽 + 대각선
+
         getChildren().addAll(
-                new Line(x, y, x + w, y),                     // 상
+                new Line(x, y, x + w, y),                          // 상
                 new Line(x + w, y, x + w, y + w),             // 우
                 new Line(x + w, y + w, x, y + w),             // 하
-                new Line(x, y + w, x, y),                     // 좌
-                new Line(x, y, x + w, y + w),                 // 대각
-                new Line(x + w, y, x, y + w)                  // 대각
+                new Line(x, y + w, x, y),                          // 좌
+                new Line(x, y, x + w, y + w),                   // 대각
+                new Line(x + w, y, x, y + w)                     // 대각
         );
     }
 
     private void drawNGon(int sides) {
-        /* Swing 로직 그대로: S1-S2-… 모서리 ↔ S6(센터) 연결 */
         NodeViewDto center = views.stream()
                 .filter(v -> v.name().equals("S6"))
                 .findFirst()

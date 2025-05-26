@@ -22,27 +22,17 @@ import org.core.state.turn.TurnStateMachine;
 
 /**
  * DialogUtil (JavaFX)
- *
- * Swing {@code org.view.swing.DialogUtil} 과 동일한 정적 API를 제공하지만,
- * 구현은 JavaFX {@link Alert}, {@link TextInputDialog}, {@link ChoiceDialog}를 사용합니다.
  */
 public final class DialogUtil {
 
     private DialogUtil() {}
 
-    /* -------------------------------------------------- 초기 설정 -------------------------------------------------- */
-
-    /**
-     * 팀 수, 말 수, 보드 타입을 차례대로 입력 받아 {@link GameInitializeDto} 를 반환합니다.
-     */
     public static GameInitializeDto showInitDialog(Window owner) {
         int teamCnt  = askInt(owner, "몇 명의 팀으로 진행할까요? (2~4)");
         int pieceCnt = askInt(owner, "몇 개의 말로 진행할까요? (2~5)");
         int type     = askInt(owner, "어떤 보드로 진행할까요? (4,5,6)");
         return new GameInitializeDto(teamCnt, pieceCnt, BoardType.mapTo(type));
     }
-
-    /* -------------------------------------------------- 윷 던지기 -------------------------------------------------- */
 
     public static YutGenerationRequest askYutGeneration(Window owner,
                                                         TurnStateMachine turnSM) {
@@ -65,7 +55,6 @@ public final class DialogUtil {
         return new YutGenerationRequest(YutGenerateOptions.RANDOM, null);
     }
 
-    /* -------------------------------------------------- 선택 다이얼로그 -------------------------------------------------- */
 
     public static YutResult chooseYutResult(Window owner, List<YutResult> list) {
         ChoiceDialog<YutResult> dialog = new ChoiceDialog<>(list.get(0), list);
@@ -77,7 +66,6 @@ public final class DialogUtil {
     }
 
     public static GamePieces chooseMovingPiece(Window owner, List<GamePieces> list) {
-        /* ── 라벨 문자열 생성 ───────────────────────────────────────────── */
         String[] labels = list.stream().map(gp -> {
             String joined = gp.getPieces().stream()
                     .map(pi -> String.valueOf(pi.getPieceNumber()))
@@ -85,8 +73,6 @@ public final class DialogUtil {
             return gp.getTeam() + "팀: " + joined;
         }).toArray(String[]::new);
 
-        /* ── ChoiceDialog 준비 ─────────────────────────────────────────── */
-        // 선택지는 0,1,2 … 인덱스
         ChoiceDialog<Integer> dialog =
                 new ChoiceDialog<>(0, createIndexList(list.size()));
         dialog.initOwner(owner);
@@ -95,7 +81,6 @@ public final class DialogUtil {
         dialog.setContentText("이동할 말을 선택하세요:");
         dialog.setGraphic(null);
 
-        /* ── ChoiceBox 찾아서 라벨 컨버터 연결 ──────────────────────────── */
         ChoiceBox<Integer> box =
                 (ChoiceBox<Integer>) dialog.getDialogPane().lookup(".choice-box");
         if (box != null) {
@@ -105,7 +90,6 @@ public final class DialogUtil {
             });
         }
 
-        /* ── 결과 반환 ──────────────────────────────────────────────────── */
         int sel = dialog.showAndWait().orElse(0);
         return list.get(sel);
     }
@@ -119,7 +103,6 @@ public final class DialogUtil {
         return dialog.showAndWait().orElse(places.get(0));
     }
 
-    /* -------------------------------------------------- 게임 종료 결정 -------------------------------------------------- */
 
     public static GameDecision askGameDecision(Window owner) {
         Alert alert = new Alert(AlertType.CONFIRMATION,
@@ -130,8 +113,6 @@ public final class DialogUtil {
         return res.isPresent() && res.get() == ButtonType.YES ?
                 GameDecision.RESTART : GameDecision.EXIT;
     }
-
-    /* -------------------------------------------------- 내부 유틸 -------------------------------------------------- */
 
     private static int askInt(Window owner, String prompt) {
         while (true) {

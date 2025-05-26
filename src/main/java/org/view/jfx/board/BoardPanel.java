@@ -13,7 +13,6 @@ import java.util.List;
 
 /**
  * BoardPanel (JavaFX)
- * Swing BoardPanel 과 동일한 책임을 가지며 레이어를 JavaFX Node 로 교체했다.
  */
 public final class BoardPanel extends Pane {
 

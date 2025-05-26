@@ -19,10 +19,6 @@ import java.util.Optional;
 
 /**
  * YutThrowPanel (JavaFX)
- * <p>
- * Swing 버전과 동일한 역할을 수행합니다.
- * - "지정 윷 던지기"와 "랜덤 윷 던지기" 두 버튼 제공
- * - 클릭 시 TurnGenerateYutEvent 를 TurnStateMachine 으로 전송
  */
 public final class YutThrowPanel extends HBox {
 
@@ -91,6 +87,7 @@ public final class YutThrowPanel extends HBox {
 
     public void setEnabled(boolean enabled) {
         Platform.runLater(() -> {
+            setDisable(!enabled);
             fixedThrowButton.setDisable(!enabled);
             randomThrowButton.setDisable(!enabled);
         });
