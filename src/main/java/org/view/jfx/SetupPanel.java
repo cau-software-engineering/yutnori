@@ -61,6 +61,7 @@ public final class SetupPanel extends VBox {
     }
 
 
+
     private VBox createCounterBox(String title, Label valueLabel,
                                   int min, int max, boolean isTeam) {
 

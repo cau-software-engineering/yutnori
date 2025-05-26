@@ -12,7 +12,7 @@ import org.core.state.game.GameStateMachine;
 import org.core.state.turn.TurnStateMachine;
 import org.core.state.turn.event.TurnMovePieceEvent;
 import org.core.state.turn.state.TurnWaitForActionState;
-import org.view.jfx.StoreFX;
+import org.view.jfx.StoreJFX;
 
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public final class MoveControl extends Pane {
 
     private final GameStateMachine gameSM;
     private final TurnStateMachine turnSM;
-    private final StoreFX          store;
+    private final StoreJFX store;
 
     private GamePieces                 selectedPiece;
     private final List<Button>         placedPieceButtons   = new ArrayList<>();
@@ -41,7 +41,7 @@ public final class MoveControl extends Pane {
 
     public MoveControl(GameStateMachine gameSM,
                        TurnStateMachine turnSM,
-                       StoreFX store)
+                       StoreJFX store)
     {
         this.gameSM = gameSM;
         this.turnSM = turnSM;

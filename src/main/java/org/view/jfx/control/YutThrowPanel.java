@@ -34,6 +34,7 @@ public final class YutThrowPanel extends HBox {
         setAlignment(Pos.CENTER);
         setSpacing(20);
         setPadding(new Insets(10));
+        setPadding(new Insets(280, 10, 10, 10));
 
         fixedThrowButton = createStyledButton("지정 윷 던지기");
         randomThrowButton = createStyledButton("랜덤 윷 던지기");

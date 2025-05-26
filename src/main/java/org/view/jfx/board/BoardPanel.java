@@ -6,7 +6,7 @@ import org.core.dto.NodeViewDto;
 import org.core.state.game.GameStateMachine;
 import org.core.state.turn.TurnStateMachine;
 import org.core.state.turn.state.TurnWaitForActionState;
-import org.view.jfx.StoreFX;
+import org.view.jfx.StoreJFX;
 import org.view.mapper.BoardViewMapper;
 
 import java.util.List;
@@ -27,9 +27,9 @@ public final class BoardPanel extends Pane {
 
     private final GameStateMachine gameSM;
     private final TurnStateMachine turnSM;
-    private final StoreFX store;
+    private final StoreJFX store;
 
-    public BoardPanel(GameStateMachine gameSM, TurnStateMachine turnSM, StoreFX store, int teamCount) {
+    public BoardPanel(GameStateMachine gameSM, TurnStateMachine turnSM, StoreJFX store, int teamCount) {
         this.gameSM = gameSM;
         this.turnSM = turnSM;
         this.store = store;

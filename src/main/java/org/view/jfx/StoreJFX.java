@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class StoreFX {
+public final class StoreJFX {
 
     private final int teamCount;
-    private Map<String, Point2D> nodePos;      // ← 항상 null 아님
+    private Map<String, Point2D> nodePos;
     private final Color[] palette;
 
-    public StoreFX(int teamCount) {
+    public StoreJFX(int teamCount) {
         this.teamCount = teamCount;
-        this.palette   = buildPalette(teamCount);         // ← 여기서 nodePos 초기화
+        this.palette   = buildPalette(teamCount);         //nodePos 초기화
     }
 
     // 팀 수에 맞춰 팔레트 생성

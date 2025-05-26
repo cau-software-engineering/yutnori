@@ -27,7 +27,7 @@ public final class JFXView extends Application {
             Platform.runLater(() -> {
                 GameStateMachine gameSM = GameStateMachine.create(dto);
                 TurnStateMachine turnSM = TurnStateMachine.create(gameSM);
-                StoreFX store             = new StoreFX(dto.teamCount());
+                StoreJFX store             = new StoreJFX(dto.teamCount());
 
                 // 왼쪽: 보드 오른쪽: 컨트롤
                 BoardPanel   board   = new BoardPanel(gameSM, turnSM, store, dto.teamCount());

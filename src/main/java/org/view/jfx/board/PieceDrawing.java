@@ -9,7 +9,7 @@ import org.core.domain.piece.GamePieces;
 import org.core.service.BoardService;
 import org.core.state.game.GameStateMachine;
 import org.core.state.turn.TurnStateMachine;
-import org.view.jfx.StoreFX;
+import org.view.jfx.StoreJFX;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,14 @@ public final class PieceDrawing extends Pane {
 
     private final GameStateMachine gameSM;
     private final TurnStateMachine turnSM;
-    private final StoreFX          store;
+    private final StoreJFX store;
 
     private final List<Circle> circles = new ArrayList<>();
 
 
     public PieceDrawing(GameStateMachine gameSM,
                         TurnStateMachine turnSM,
-                        StoreFX store)
+                        StoreJFX store)
     {
         this.gameSM = gameSM;
         this.turnSM = turnSM;
