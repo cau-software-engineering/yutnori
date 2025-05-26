@@ -39,7 +39,6 @@ public final class PieceDrawing extends Pane {
         setPickOnBounds(false);     // 빈 영역 클릭은 통과 (BoardPanel 이벤트용)
         setMouseTransparent(true);  // 자체적으로는 클릭 처리 안 함
 
-        // 게임/턴 상태가 바뀔 때마다 새로 그린다.
         gameSM.observe(s -> Platform.runLater(this::refresh));
         turnSM.observe(s -> Platform.runLater(this::refresh));
 

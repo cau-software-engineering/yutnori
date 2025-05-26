@@ -14,6 +14,7 @@ import org.core.state.turn.event.TurnMovePieceEvent;
 import org.core.state.turn.state.TurnWaitForActionState;
 import org.view.jfx.StoreFX;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +78,6 @@ public final class MoveControl extends Pane {
                 btn = createPlacedPieceButton(piece);
                 placedPieceButtons.add(btn);
             } else {
-                // ─ unstarted pieces ---------------------------------------------
                 btn = createUnstartedPieceButton(idx, list.size(), piece);
                 unstartedPieceButtons.add(btn);
             }
@@ -169,9 +169,10 @@ public final class MoveControl extends Pane {
     }
 
     private Button createDestButton(Color color) {
+        Color light = color.interpolate(Color.WHITE, 0.2);
         Button btn = new Button();
         btn.setPrefSize(DEST_BTN_D, DEST_BTN_D);
-        btn.setStyle(roundStyle(color));
+        btn.setStyle(roundStyle(light));
         btn.setMouseTransparent(false);
         return btn;
     }
@@ -199,7 +200,6 @@ public final class MoveControl extends Pane {
         return String.format("#%02x%02x%02x", (int)(c.getRed()*255), (int)(c.getGreen()*255), (int)(c.getBlue()*255));
     }
 
-    // Utility – highlight / clear helpers
     private void highlightPlacedButton(Button b) {
         placedPieceButtons.forEach(btn -> btn.setStyle(ringStyle(Color.web("#FFFFFF"))));
         b.setStyle(ringStyle(Color.LIMEGREEN));
