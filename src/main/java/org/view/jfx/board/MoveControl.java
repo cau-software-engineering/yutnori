@@ -174,6 +174,8 @@ public final class MoveControl extends Pane {
     Color light = color.interpolate(Color.WHITE, 0.2);
     Button btn = new Button();
     btn.setPrefSize(DEST_BTN_D, DEST_BTN_D);
+    btn.setMinSize(DEST_BTN_D, DEST_BTN_D);
+    btn.setMaxSize(DEST_BTN_D, DEST_BTN_D);
     btn.setStyle(Utils.roundStyle(light));
     btn.setMouseTransparent(false);
     return btn;
