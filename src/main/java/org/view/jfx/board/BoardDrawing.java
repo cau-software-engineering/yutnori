@@ -14,8 +14,8 @@ import org.core.dto.NodeViewDto;
  */
 public final class BoardDrawing extends Pane {
 
-  private static final int NORMAL_R = 15;
-  private static final int CORNER_R = 30;
+  private static final int NORMAL_R = 5;
+  private static final int CORNER_R = 10;
 
   private final BoardType type;
   private final List<NodeViewDto> views;
@@ -45,8 +45,7 @@ public final class BoardDrawing extends Pane {
 
     for (NodeViewDto v : views) {
       int r = v.name().startsWith("S") ? CORNER_R : NORMAL_R;
-      Circle c = new Circle(v.x(), v.y(), r, Color.WHITE);
-      c.setStroke(Color.BLACK);
+      Circle c = new Circle(v.x(), v.y(), r, Color.BLACK);
       getChildren().add(c);
     }
   }

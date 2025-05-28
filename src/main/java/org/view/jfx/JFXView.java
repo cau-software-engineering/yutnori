@@ -3,7 +3,8 @@ package org.view.jfx;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.SplitPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.core.state.game.GameStateMachine;
@@ -17,41 +18,41 @@ import org.view.jfx.control.ControlPanel;
  */
 public final class JFXView extends Application {
 
-    @Override
-    public void start(Stage primaryStage) {
-        // 설정 창 호출
-        SetupPanel setupPanel = new SetupPanel();
-        setupPanel.startSetup().thenAccept(dto -> {
+  public static void main(String[] args) {
+    launch(args);
+  }
 
-            // 메인 UI 구성 (JavaFX Thread)
-            Platform.runLater(() -> {
-                GameStateMachine gameSM = GameStateMachine.create(dto);
-                TurnStateMachine turnSM = TurnStateMachine.create(gameSM);
-                StoreJFX store             = new StoreJFX(dto.teamCount());
+  @Override
+  public void start(Stage primaryStage) {
+    // 설정 창 호출
+    SetupPanel setupPanel = new SetupPanel();
+    setupPanel.startSetup().thenAccept(dto -> {
 
-                // 왼쪽: 보드 오른쪽: 컨트롤
-                BoardPanel   board   = new BoardPanel(gameSM, turnSM, store, dto.teamCount());
-                ControlPanel control = new ControlPanel(gameSM, turnSM, primaryStage);
+      // 메인 UI 구성 (JavaFX Thread)
+      Platform.runLater(() -> {
+        GameStateMachine gameSM = GameStateMachine.create(dto);
+        TurnStateMachine turnSM = TurnStateMachine.create(gameSM);
+        StoreJFX store = new StoreJFX(dto.teamCount());
 
-                SplitPane split = new SplitPane(board, control);
-                split.setPrefSize(1220, 640);
-                split.setDividerPositions(0.49);          // 약 600px 위치
-                split.setStyle("-fx-background-color: white;");
+        // 왼쪽: 보드 오른쪽: 컨트롤
+        BoardPanel board = new BoardPanel(gameSM, turnSM, store, dto.teamCount());
+        ControlPanel control = new ControlPanel(gameSM, turnSM, primaryStage);
 
-                // Stage 설정
-                primaryStage.setTitle("윷놀이 (JavaFX)");
-                primaryStage.setScene(new Scene(split, 1220, 640, Color.WHITE));
-                primaryStage.setResizable(false);
-                primaryStage.centerOnScreen();
-                primaryStage.show();
+        HBox box = new HBox(board, control);
 
-                // 게임 시작
-                gameSM.dispatchEvent(new GameStartEvent());
-            });
-        });
-    }
+        HBox.setHgrow(box, Priority.ALWAYS);
+        HBox.setHgrow(control, Priority.ALWAYS);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+        // Stage 설정
+        primaryStage.setTitle("윷놀이 (JavaFX)");
+        primaryStage.setScene(new Scene(box, 1120, 560, Color.WHITE));
+        primaryStage.setResizable(false);
+        primaryStage.centerOnScreen();
+        primaryStage.show();
+
+        // 게임 시작
+        gameSM.dispatchEvent(new GameStartEvent());
+      });
+    });
+  }
 }
