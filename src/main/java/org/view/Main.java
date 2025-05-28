@@ -1,9 +1,11 @@
 package org.view;
 
+import javax.swing.SwingUtilities;
+import org.view.swing.SwingView;
+
 public class Main {
 
   public static void main(String[] args) {
-    ConsoleView consoleView = new ConsoleView();
-
+    SwingUtilities.invokeLater(SwingView::new);
   }
 }
