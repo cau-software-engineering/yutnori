@@ -72,3 +72,9 @@ jacocoTestReport {
         return System.getenv('TEST_REPORT') == 'true'
     }
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.view.Main'
+    }
+}

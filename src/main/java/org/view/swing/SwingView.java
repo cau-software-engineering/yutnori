@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
 import org.core.state.game.GameStateMachine;
 import org.core.state.game.event.GameStartEvent;
 import org.core.state.turn.TurnStateMachine;

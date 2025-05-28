@@ -50,6 +50,10 @@ public class TurnStateContext {
   }
 
   public YutResult lastYutResult() {
+    if (yutResults.isEmpty()) {
+      return null;
+    }
+
     return yutResults.get(yutResults.size() - 1);
   }
 

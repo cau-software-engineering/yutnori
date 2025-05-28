@@ -44,7 +44,7 @@ public class ControlPanel extends JPanel {
     this.setBackground(Color.WHITE);
 
     announcementPanel = new AnnouncementPanel();
-    yutResultPanel = new YutResultPanel();
+    yutResultPanel = new YutResultPanel(turnSM);
     yutThrowPanel = new YutThrowPanel(turnSM);
 
     this.add(announcementPanel);
@@ -95,6 +95,7 @@ public class ControlPanel extends JPanel {
 
   // handle turn state
   private void handleTurnState(Object st) {
+    yutResultPanel.update();
 
     if (st instanceof TurnIdleState) {
       if (gameSM.isGameOver()) {
