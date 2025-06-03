@@ -3,6 +3,7 @@ plugins {
     id 'jacoco'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'org.example'
@@ -25,7 +26,7 @@ repositories {
 }
 
 application {
-    mainClass = 'org.view.jfx.JFXView'
+    mainClass = 'org.view.jfx.JFXApp'
 }
 
 javafx {
